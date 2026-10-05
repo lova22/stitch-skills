@@ -11,49 +11,53 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1920px;height:1080px;background:#000;overflow:hidden}
 #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--paper);font-family:Cairo,Tajawal,sans-serif}
-#paper{position:absolute;inset:-40px;opacity:.28;mix-blend-mode:multiply;
+#paper{position:absolute;inset:-40px;opacity:.30;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .53  0 0 0 0 .5  0 0 0 .55 0'/></filter><rect width='600' height='600' filter='url(%23n)'/></svg>")}
-#vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,.0) 55%,rgba(60,40,90,.06) 100%);pointer-events:none}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,0) 55%,rgba(60,40,90,.06) 100%);pointer-events:none}
 .abs{position:absolute}
 .scene{position:absolute;inset:0;display:none}
-.mm{mix-blend-mode:multiply}
-.gray{filter:grayscale(1) contrast(1.15)}
-.shadow{filter:drop-shadow(0 14px 18px rgba(30,10,60,.28))}
-.circle{border-radius:50%;background:var(--purple)}
 .label{width:520px;height:132px;background:#fbfbf8;
   background-image:repeating-linear-gradient(to bottom,transparent 0 31px,#9db7e6 31px 33px);
   box-shadow:0 10px 18px rgba(0,0,0,.25);border-radius:4px}
 .label:before{content:"";position:absolute;right:56px;top:0;bottom:0;width:3px;background:#e8837c}
-.label .spiral{position:absolute;left:12px;top:14px;width:16px;height:104px;
-  background:radial-gradient(circle at 8px 8px,#333 0 6px,transparent 7px) 0 0/16px 26px repeat-y}
-.label span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:88px;color:var(--purple);
-  text-shadow:3px 3px 0 #f2a65c,-3px -3px 0 #6fa8dc;padding-right:30px}
+.label .spiral{position:absolute;left:12px;top:14px;width:16px;height:104px;background:radial-gradient(circle at 8px 8px,#333 0 6px,transparent 7px) 0 0/16px 26px repeat-y}
+.label .txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:88px;color:var(--purple);text-shadow:3px 3px 0 #f2a65c,-3px -3px 0 #6fa8dc;padding-right:30px}
 .num{font-family:Tajawal;font-weight:900;font-size:230px;line-height:1;color:var(--purple);direction:ltr;white-space:nowrap;letter-spacing:-2px}
 .unit{font-weight:800;font-size:76px;color:var(--purple);letter-spacing:6px}
 .note{font-weight:800;font-size:56px;color:var(--orange)}
-.brushbg{background:#fff;border-radius:46% 54% 50% 50%/60% 46% 54% 40%;filter:blur(1px);box-shadow:0 0 30px 14px #fff}
-#wipe{position:absolute;inset:0;pointer-events:none;display:none}
-#wipe div{position:absolute;top:-200px;height:1500px;transform:skewX(-14deg)}
-#dots{position:absolute;top:44px;left:50%;transform:translateX(-50%);display:flex;gap:16px;direction:ltr}
-#dots i{width:18px;height:18px;border-radius:50%;background:#cfc8dc;display:block;transition:none}
+.pbrush{background:#fff;border-radius:46% 54% 50% 50%/60% 46% 54% 40%;filter:blur(1px);box-shadow:0 0 30px 14px #fff}
+#hatch{position:absolute;left:700px;top:0;width:560px;height:46px;opacity:0;background:repeating-linear-gradient(135deg,rgba(80,80,90,.35) 0 4px,transparent 4px 10px)}
+#dots{position:absolute;top:44px;left:50%;transform:translateX(-50%);display:none;gap:16px;direction:ltr}
+#dots i{width:18px;height:18px;border-radius:50%;background:#cfc8dc;display:block}
+#iris{position:absolute;left:260px;top:560px;width:1400px;height:1400px;border-radius:50%;background:var(--purple);display:none}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute">
- <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".012 .06" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="90"/></filter>
+ <defs>
+  <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#b9b6bd"/></linearGradient>
+  <filter id="ds" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="14" stdDeviation="9" flood-color="#1e0a3c" flood-opacity=".28"/></filter>
+  <filter id="gray"><feColorMatrix type="saturate" values="0"/></filter>
+  <filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="46"/></filter>
+  <filter id="gl" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence id="glt" type="fractalNoise" baseFrequency="0.0009 0.5" numOctaves="1" seed="1" result="n"/>
+    <feDisplacementMap id="gld" in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+ </defs>
 </svg>
 <div id="stage">
   <div id="paper"></div>
   <div id="scenes"></div>
+  <div id="hatch"></div>
+  <div id="iris"></div>
   <div id="dots"></div>
-  <div id="wipe"></div>
   <div id="vig"></div>
 </div>
 <script>
-/* ===================== CONFIG (edit here) ===================== */
+/* ===================== CONFIG ===================== */
 const CHANNEL = "لبنان راح ترجع";
 const T_TITLE = 6.0;
-const DURS = [5.7, 6.4, 7.2, 5.9, 8.1, 10.3];           // seconds per city (fits the voiceover)
+const DURS = [5.7, 6.4, 7.2, 5.9, 8.1, 10.3];
 const STARTS = DURS.map((d,i)=>T_TITLE + DURS.slice(0,i).reduce((a,b)=>a+b,0));
 const T_OUT = T_TITLE + DURS.reduce((a,b)=>a+b,0), T_END = T_OUT + 4.6;
 const CITIES = [
@@ -64,195 +68,313 @@ const CITIES = [
  {name:"شفشـــاون", num:550,  note:"(منذ 1471م)",            side:"L", art:"chef"},
  {name:"أكاديـــر", num:520,  note:"(منذ 1505م)",            side:"R", art:"agadir"},
 ];
-/* ============================================================== */
-const $ = (s,r=document)=>r.querySelector(s);
+/* ================================================== */
+const NS="http://www.w3.org/2000/svg";
+const $=(s,r=document)=>r.querySelector(s);
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const eo3=x=>1-Math.pow(1-clamp(x),3);
 const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
 const eob=x=>{x=clamp(x);const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
 const seg=(t,a,b)=>clamp((t-a)/(b-a));
-
+const hash=(a,b=0)=>{const x=Math.sin(a*127.1+b*311.7)*43758.5453;return x-Math.floor(x)};
 function rnd(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
-function jagged(seed,amp=7,step=34,w=100,h=100){ // torn-paper polygon in %
-  const r=rnd(seed),p=[];const n=Math.round(w/ (step/6));
-  for(let i=0;i<=n;i++)p.push([i/n*100,(r()*amp)]);
-  for(let i=1;i<=n;i++)p.push([100-r()*amp,i/n*100]);
-  for(let i=n-1;i>=0;i--)p.push([i/n*100,100-r()*amp]);
-  for(let i=n-1;i>=1;i--)p.push([r()*amp,i/n*100]);
-  return "polygon("+p.map(a=>a[0].toFixed(1)+"% "+a[1].toFixed(1)+"%").join(",")+")";
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+function jag(seed,x,y,w,h,amp=9,step=26){
+  const r=rnd(seed),p=[];const nx=Math.max(4,Math.round(w/step)),ny=Math.max(4,Math.round(h/step));
+  for(let i=0;i<=nx;i++)p.push([x+i/nx*w,y+r()*amp]);
+  for(let i=1;i<=ny;i++)p.push([x+w-r()*amp,y+i/ny*h]);
+  for(let i=nx-1;i>=0;i--)p.push([x+i/nx*w,y+h-r()*amp]);
+  for(let i=ny-1;i>=1;i--)p.push([x+r()*amp,y+i/ny*h]);
+  return p;
 }
-const flagSVG=`<svg viewBox="0 0 150 100" width="150" height="100"><rect width="150" height="100" fill="#c1272d"/>
-<polygon points="75,22 82.6,45.4 107.2,45.4 87.3,59.9 94.9,83.3 75,68.8 55.1,83.3 62.7,59.9 42.8,45.4 67.4,45.4" fill="none" stroke="#006233" stroke-width="5" stroke-linejoin="miter"/></svg>`;
-const cloudSVG=(w)=>`<svg viewBox="0 0 300 130" width="${w}"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#b9b6bd"/></linearGradient></defs>
-<g fill="url(#cg)"><circle cx="70" cy="80" r="42"/><circle cx="120" cy="55" r="50"/><circle cx="185" cy="62" r="46"/><circle cx="235" cy="88" r="36"/><rect x="40" y="82" width="230" height="40" rx="20"/></g></svg>`;
-const blobSVG=(w,c)=>`<svg viewBox="0 0 300 300" width="${w}"><path d="M40 70 C90 10 200 20 250 70 C290 120 270 200 210 250 C150 290 70 270 30 210 C0 160 10 110 40 70Z" fill="${c}"/></svg>`;
-const zellige=`<svg viewBox="0 0 300 300" width="300" height="300"><defs><pattern id="z" width="100" height="100" patternUnits="userSpaceOnUse">
-<rect width="100" height="100" fill="#f6efe2"/><rect x="22" y="22" width="56" height="56" fill="#ee7a1d"/><rect x="22" y="22" width="56" height="56" fill="#3a1a6e" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="11" fill="#f6efe2"/><circle cx="0" cy="0" r="14" fill="#2f7f86"/><circle cx="100" cy="0" r="14" fill="#2f7f86"/><circle cx="0" cy="100" r="14" fill="#2f7f86"/><circle cx="100" cy="100" r="14" fill="#2f7f86"/></pattern></defs>
-<rect width="300" height="300" fill="url(#z)"/></svg>`;
+const pts=p=>p.map(a=>a[0].toFixed(1)+","+a[1].toFixed(1)).join(" ");
+const dataSVG=s=>"data:image/svg+xml;utf8,"+encodeURIComponent(s);
 
+const flagInner=`<rect width="150" height="100" fill="#c1272d"/><polygon points="75,22 82.6,45.4 107.2,45.4 87.3,59.9 94.9,83.3 75,68.8 55.1,83.3 62.7,59.9 42.8,45.4 67.4,45.4" fill="none" stroke="#006233" stroke-width="5"/>`;
 function tangierSVG(){
   const r=rnd(11);let h="";
-  // hillside houses
   for(let row=0;row<9;row++){for(let i=0;i<14;i++){
     const x=40+i*38+(row%2)*18+r()*8, y=250+row*24-i*(6.5)+r()*6, w=30+r()*10, hh=24+r()*10;
     if(y<150||y>420)continue;
-    h+=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" fill="#f4f1ea"/><rect x="${x+w-7}" y="${y}" width="7" height="${hh}" fill="#d9d2c4"/>`+
-       `<rect x="${x+6}" y="${y+7}" width="7" height="10" fill="${r()>.6?'#4f86c6':'#3a1a6e'}"/>`;
+    h+=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" fill="#f4f1ea"/><rect x="${x+w-7}" y="${y}" width="7" height="${hh}" fill="#d9d2c4"/><rect x="${x+6}" y="${y+7}" width="7" height="10" fill="${r()>.6?'#4f86c6':'#3a1a6e'}"/>`;
   }}
-  return `<svg viewBox="0 0 640 520" width="640" height="520">
-  <defs><clipPath id="hill"><path d="M0 330 C80 250 160 190 270 160 C380 135 470 160 560 230 L640 260 L640 420 L0 420Z"/></clipPath></defs><path d="M0 330 C80 250 160 190 270 160 C380 135 470 160 560 230 L640 260 L640 420 L0 420Z" fill="#c9b79a"/>
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" width="640" height="520">
+  <defs><clipPath id="hill"><path d="M0 330 C80 250 160 190 270 160 C380 135 470 160 560 230 L640 260 L640 420 L0 420Z"/></clipPath></defs>
+  <path d="M0 330 C80 250 160 190 270 160 C380 135 470 160 560 230 L640 260 L640 420 L0 420Z" fill="#c9b79a"/>
   <g clip-path="url(#hill)">${h}</g>
-  <!-- kasbah -->
   <rect x="330" y="120" width="170" height="150" fill="#efe7d6"/><rect x="330" y="120" width="170" height="14" fill="#d8cdb6"/>
   ${[0,1,2,3,4,5,6].map(i=>`<rect x="${332+i*24}" y="106" width="14" height="16" fill="#efe7d6"/>`).join("")}
   <path d="M385 270 v-70 a30 30 0 0 1 60 0 v70z" fill="#3a1a6e"/><path d="M395 270 v-66 a20 20 0 0 1 40 0 v66z" fill="#ee7a1d"/>
-  <!-- minaret -->
   <rect x="215" y="90" width="58" height="190" fill="#efe7d6"/><rect x="215" y="120" width="58" height="34" fill="#2f7f86"/>
-  <rect x="215" y="120" width="58" height="34" fill="url(#zz)"/>
   <rect x="204" y="78" width="80" height="14" fill="#d8cdb6"/><rect x="226" y="52" width="36" height="28" fill="#efe7d6"/>
   <circle cx="244" cy="42" r="9" fill="#e8b23a"/><rect x="242" y="48" width="4" height="10" fill="#e8b23a"/>
   <rect x="236" y="190" width="16" height="36" rx="8" fill="#3a1a6e"/>
-  <!-- sea -->
   <path d="M0 400 C120 380 200 420 320 400 C440 380 520 420 640 396 V520 H0Z" fill="#1f6fb0"/>
   <path d="M0 440 C120 420 200 460 320 440 C440 420 520 460 640 436 V520 H0Z" fill="#4f9fd6"/>
-  <path d="M0 482 C120 466 200 498 320 482 C440 466 520 498 640 480 V520 H0Z" fill="#9bcbe9"/>
-  </svg>`;
+  <path d="M0 482 C120 466 200 498 320 482 C440 466 520 498 640 480 V520 H0Z" fill="#9bcbe9"/></svg>`;
 }
+const zelligeSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300"><defs><pattern id="z" width="100" height="100" patternUnits="userSpaceOnUse">
+<rect width="100" height="100" fill="#f6efe2"/><rect x="22" y="22" width="56" height="56" fill="#ee7a1d"/><rect x="22" y="22" width="56" height="56" fill="#3a1a6e" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="11" fill="#f6efe2"/><circle cx="0" cy="0" r="14" fill="#2f7f86"/><circle cx="100" cy="0" r="14" fill="#2f7f86"/><circle cx="0" cy="100" r="14" fill="#2f7f86"/><circle cx="100" cy="100" r="14" fill="#2f7f86"/></pattern></defs><rect width="300" height="300" fill="url(#z)"/></svg>`;
 
-/* ---------- scene builders ---------- */
-function mk(html,css){const d=document.createElement("div");d.className="abs "+(css||"");d.innerHTML=html;return d}
-function artFor(c,ax,s){ // returns {main,sec} elements (absolute inside scene), anchor ax = art centre x
-  const E={};
-  const img=(src,w,cls="")=>`<img src="${src}" width="${w}" class="${cls}" style="display:block">`;
-  const scrap=(src,w,h,seed,cls="")=>{
-    return `<div style="width:${w}px;height:${h}px;background:#fff;clip-path:${jagged(seed,5)};padding:12px"><div style="width:100%;height:100%;clip-path:${jagged(seed+9,4)};overflow:hidden"><img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block" class="${cls}"></div></div>`;
-  };
-  switch(c.art){
-   case "tangier": E.main=mk(tangierSVG(),"shadow"); E.mw=640;E.mh=520;E.my=250;E.mx=ax-320; break;
-   case "fes":     E.main=mk(scrap("assets/fes_gate.jpg",660,456,3),"shadow"); E.mw=660;E.mh=456;E.my=260;E.mx=ax-330;
-                   E.sec=mk(blobSVG(250,"#ee7a1d"),""); E.sx=ax+(s==="L"?-330:130); E.sy=220; break;
-   case "marrakech":E.main=mk(img("assets/marr_minaret.png",430),"shadow"); E.mw=430;E.mh=645;E.my=150;E.mx=ax-215;
-                   E.sec=mk(zellige,"shadow"); E.sx=ax+(s==="L"?120:-420); E.sy=470; E.srot=-6; break;
-   case "rabat":   E.main=mk(img("assets/rabat_hassan_k.png",400),"shadow"); E.mw=400;E.mh=486;E.my=190;E.mx=ax-110;
-                   E.sec=mk(img("assets/rabat_mausoleum.png",420),"shadow gray"); E.sx=ax-370; E.sy=430; break;
-   case "chef":    E.main=mk(scrap("assets/chef.jpg",560,560,5),"shadow"); E.mw=560;E.mh=560;E.my=215;E.mx=ax-280;
-                   E.sec=mk(blobSVG(240,"#ee7a1d"),""); E.sx=ax-330; E.sy=500; break;
-   case "agadir":  E.main=mk(img("assets/agadir_vec.png",560),"shadow"); E.mw=560;E.mh=560;E.my=200;E.mx=ax-280;
-                   E.sec=mk(img("assets/agadir_beach.png",470),"shadow gray"); E.sx=ax-380; E.sy=560; break;
+/* torn-paper scrap: border polygon + clipped (optionally cropped / grayscale) image */
+let uid=0;
+function scrap(parent,src,x,y,w,h,seed,opts={}){
+  const id="c"+(uid++), g=el("g",{},parent);
+  const outer=jag(seed,x,y,w,h,8), inner=jag(seed+9,x+12,y+12,w-24,h-24,6);
+  el("polygon",{points:pts(outer),fill:opts.border||"#fff"},g);
+  const cp=el("clipPath",{id},g); el("polygon",{points:pts(inner)},cp);
+  const ig=el("g",{"clip-path":`url(#${id})`},g);
+  if(opts.crop){const c=opts.crop;
+    const sv=el("svg",{x:x+12,y:y+12,width:w-24,height:h-24,viewBox:`${c[0]} ${c[1]} ${c[2]} ${c[3]}`,preserveAspectRatio:"xMidYMid slice"},ig);
+    const im=el("image",{href:src,width:c[4],height:c[5]},sv); if(opts.gray)im.setAttribute("filter","url(#gray)");
+  } else {
+    const im=el("image",{href:src,x:x+12,y:y+12,width:w-24,height:h-24,preserveAspectRatio:"xMidYMid slice"},ig); if(opts.gray)im.setAttribute("filter","url(#gray)");
   }
-  return E;
+  return g;
 }
+function cutout(parent,src,x,y,w,h,gray){const im=el("image",{href:src,x,y,width:w,height:h,preserveAspectRatio:"xMidYMid meet"},parent);if(gray)im.setAttribute("filter","url(#gray)");return im}
 
+/* ---------- build scenes ---------- */
 const scenes=[];
+function circlePath(cx,cy,r,m,rot){
+  const N=44,P=[];const cs=Math.cos(rot),sn=Math.sin(rot);
+  for(let k=0;k<N;k++){const th=k/N*Math.PI*2;let x=r*Math.cos(th),y=r*Math.sin(th);if(y<0)y*=m;
+    P.push([cx+x*cs-y*sn, cy+x*sn+y*cs]);}
+  return "M"+P.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L")+"Z";
+}
+const ORP=[[-1.02,0],[-0.78,-0.7],[-0.35,-0.52],[0.05,-1.08],[0.55,-0.62],[0.98,-0.42],[1.04,0]];
+function orangePath(cx,cy,r,m,rot,sc){
+  const cs=Math.cos(rot),sn=Math.sin(rot);
+  return "M"+ORP.map(([a,b])=>{const x=a*r*sc,y=b*r*m*sc;return (cx+x*cs-y*sn).toFixed(1)+","+(cy+x*sn+y*cs).toFixed(1)}).join("L")+"Z";
+}
+function zig(x0,y0,w,h,rows){
+  let d="";const rh=h/rows;
+  for(let k=0;k<rows;k++){const y=y0+rh*(k+.5);const a=(k%2===0)?x0-90:x0+w+90, b=(k%2===0)?x0+w+90:x0-90;
+    d+=(k===0?"M":"L")+a+","+y+"L"+b+","+y;}
+  return d;
+}
 CITIES.forEach((c,i)=>{
-  const s=c.side, ax = s==="L"?560:1360, nx = s==="L"?1380:540; // art centre / number centre
+  const s=c.side, sg=s==="L"?1:-1, ax=s==="L"?560:1360, nx=s==="L"?1380:540;
   const root=document.createElement("div");root.className="scene";
-  const g=mk("","");g.style.inset="0";root.appendChild(g);
-  const circle=mk("","circle");circle.style.cssText+=`width:600px;height:600px;left:${ax+(s==="L"?40:-40)-300}px;top:150px`;
-  const orange=mk(blobSVG(300,"#ee7a1d"),"");orange.style.cssText+=`left:${ax-320}px;top:420px`;
-  const A=artFor(c,ax,s);
-  [circle,orange].forEach(e=>g.appendChild(e));
-  if(A.sec){A.sec.style.left=A.sx+"px";A.sec.style.top=A.sy+"px";if(A.srot)A.sec.style.transform=`rotate(${A.srot}deg)`;g.appendChild(A.sec)}
-  A.main.style.left=A.mx+"px";A.main.style.top=A.my+"px";g.appendChild(A.main);
-  const cl1=mk(cloudSVG(230),"");cl1.style.cssText+=`left:${ax-300}px;top:200px`;
-  const cl2=mk(cloudSVG(150),"");cl2.style.cssText+=`left:${ax+190}px;top:290px`;
-  g.appendChild(cl1);g.appendChild(cl2);
-  const pole=mk("","");pole.style.cssText+=`left:${ax+30}px;top:84px;width:5px;height:300px;background:#2b2b34;border-radius:3px;transform-origin:top`;
-  const flag=mk(flagSVG,"");flag.style.cssText+=`left:${ax+34}px;top:90px;transform-origin:left center`;
-  g.appendChild(pole);g.appendChild(flag);
-  const label=mk(`<div class="spiral"></div><span>${c.name}</span>`,"label");label.style.cssText+=`left:${ax-300}px;top:800px`;g.appendChild(label);
-  const num=mk(`<div class="num">0</div>`,"");num.style.cssText+=`left:${nx-420}px;width:840px;top:300px;text-align:center`;
-  const unit=mk(`ســـــنــــة`,"unit");unit.style.cssText+=`left:${nx-420}px;width:840px;top:545px;text-align:center`;
-  const note=mk(c.note,"note");note.style.cssText+=`left:${nx-420}px;width:840px;top:650px;text-align:center`;
-  g.appendChild(num);g.appendChild(unit);g.appendChild(note);
+  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox","0 0 1920 1080");svg.setAttribute("width",1920);svg.setAttribute("height",1080);svg.style.cssText="position:absolute;inset:0";
+  root.appendChild(svg);
+  const defs=el("defs",{},svg);
+  const grp=el("g",{},svg);
+  const S={c,i,s,sg,ax,nx,root,svg,grp};
+  const cx=ax+40*sg, cy=450, r=300;
+  S.cx=cx;S.cy=cy;S.r=r;
+  // sheet (first scene only)
+  if(i===0){
+    S.sheet=el("g",{},grp);
+    el("rect",{x:ax-340,y:170,width:700,height:560,fill:"#fbfbf8",filter:"url(#ds)"},S.sheet);
+    for(let k=0;k<14;k++)el("line",{x1:ax-340,x2:ax+360,y1:215+k*38,y2:215+k*38,stroke:"#b9cdee","stroke-width":2},S.sheet);
+    el("line",{x1:ax-270,x2:ax-270,y1:170,y2:730,stroke:"#e8a09a","stroke-width":3},S.sheet);
+    for(let k=0;k<9;k++){el("ellipse",{cx:ax+352,cy:215+k*58,rx:9,ry:5,fill:"#e4e2de"},S.sheet)}
+  }
+  S.pur=el("path",{fill:"#3a1a6e"},grp);
+  S.orT=el("path",{fill:"#ee7a1d"},grp);
+  S.orB=el("g",{},grp); el("path",{d:"M40 70 C90 10 200 20 250 70 C290 120 270 200 210 250 C150 290 70 270 30 210 C0 160 10 110 40 70Z",fill:"#ee7a1d",transform:`translate(${ax-320},${420}) scale(1.0)`},S.orB);
+
+  // art
+  let mainBox;  // [x,y,w,h] for brush reveal
+  const A=el("g",{},grp); S.artGroup=A;
+  // coloured brush strokes under photo
+  S.st1=el("path",{fill:"none",stroke:"#ee7a1d","stroke-width":120,"stroke-linecap":"round","stroke-linejoin":"round",filter:"url(#rough)"},A);
+  S.st2=el("path",{fill:"none",stroke:"#3a1a6e","stroke-width":130,"stroke-linecap":"round","stroke-linejoin":"round",filter:"url(#rough)"},A);
+  const M=el("g",{},A); S.mainG=M;
+  let sec=null;
+  switch(c.art){
+   case "tangier": mainBox=[ax-320,240,640,520];
+     S.mainEl=el("image",{href:dataSVG(tangierSVG()),x:ax-320,y:240,width:640,height:520},M);
+     S.secG=el("g",{},A); {const zz=el("g",{transform:`rotate(-8 ${ax-330} 640)`},S.secG);
+       el("rect",{x:ax-470,y:520,width:260,height:260,fill:"#fff",filter:"url(#ds)"},zz);
+       el("image",{href:dataSVG(zelligeSVG),x:ax-458,y:532,width:236,height:236},zz);} break;
+   case "fes": mainBox=[ax-320,250,640,426];
+     S.mainEl=scrap(M,"assets/fes_gate.jpg",ax-320,250,640,426,3);
+     S.secG=el("g",{},A); {const g2=el("g",{filter:"url(#ds)"},S.secG);
+       scrap(g2,"assets/fes_gate.jpg",ax-470,500,300,290,21,{gray:true,border:"#efe3c8",crop:[190,60,220,210,612,408]});} break;
+   case "marrakech": mainBox=[ax-215,150,430,645];
+     S.mainEl=el("image",{href:"assets/marr_minaret.png",x:ax-215,y:150,width:430,height:645,filter:"url(#ds)"},M);
+     S.secG=el("g",{},A); {const zz=el("g",{transform:`rotate(-6 ${ax+230} 600)`},S.secG);
+       el("rect",{x:ax+110,y:460,width:250,height:250,fill:"#fff",filter:"url(#ds)"},zz);
+       el("image",{href:dataSVG(zelligeSVG),x:ax+122,y:472,width:226,height:226},zz);} break;
+   case "rabat": mainBox=[ax-110,190,400,486];
+     S.mainEl=el("image",{href:"assets/rabat_hassan_k.png",x:ax-110,y:190,width:400,height:486,filter:"url(#ds)"},M);
+     S.secG=el("g",{},A); cutout(S.secG,"assets/rabat_mausoleum.png",ax-390,440,430,287,true).setAttribute("filter","url(#gray)"); break;
+   case "chef": mainBox=[ax-280,215,560,560];
+     S.mainEl=scrap(M,"assets/chef.jpg",ax-280,215,560,560,5);
+     S.secG=el("g",{},A); {const g2=el("g",{filter:"url(#ds)"},S.secG);
+       scrap(g2,"assets/chef.jpg",ax-460,520,300,280,31,{gray:true,border:"#efe3c8",crop:[40,230,230,220,447,447]});} break;
+   case "agadir": mainBox=[ax-280,200,560,560];
+     S.mainEl=el("image",{href:"assets/agadir_vec.png",x:ax-280,y:200,width:560,height:560,filter:"url(#ds)"},M);
+     S.secG=el("g",{},A); cutout(S.secG,"assets/agadir_beach.png",ax-400,560,480,250,true).setAttribute("filter","url(#gray)"); break;
+  }
+  S.mainBox=mainBox;
+  // brush path + mask
+  const zd=zig(mainBox[0],mainBox[1],mainBox[2],mainBox[3],4);
+  const mk=el("mask",{id:"m"+i,maskUnits:"userSpaceOnUse",x:0,y:0,width:1920,height:1080},defs);
+  const mg=el("g",{filter:"url(#rough)"},mk);
+  S.mp=el("path",{d:zd,fill:"none",stroke:"#fff","stroke-width":mainBox[3]/3.4,"stroke-linecap":"round","stroke-linejoin":"round"},mg);
+  S.st1.setAttribute("d",zd);S.st2.setAttribute("d",zd);
+  S.len=S.mp.getTotalLength();
+  [S.mp,S.st1,S.st2].forEach(p=>p.setAttribute("stroke-dasharray",S.len+" "+(S.len*2)));
+  S.mainG.setAttribute("mask",`url(#m${i})`);
+  // clouds
+  const cl=(w,x,y)=>{const g=el("g",{transform:`translate(${x},${y}) scale(${w/300})`},grp);
+    el("g",{fill:"url(#cg)"},g).innerHTML=`<circle cx="70" cy="80" r="42"/><circle cx="120" cy="55" r="50"/><circle cx="185" cy="62" r="46"/><circle cx="235" cy="88" r="36"/><rect x="40" y="82" width="230" height="40" rx="20"/>`;return g};
+  S.cl1=el("g",{},grp); S.cl1i=cl(240,ax-300,190); S.cl1.appendChild(S.cl1i);
+  S.cl2=el("g",{},grp); S.cl2i=cl(150,ax+190,285); S.cl2.appendChild(S.cl2i);
+  // flag
+  S.flagG=el("g",{},grp);
+  S.pole=el("rect",{x:ax+30,y:84,width:5,height:300,fill:"#2b2b34",rx:2},S.flagG);
+  S.flag=el("g",{},S.flagG); S.flag.innerHTML=flagInner;
+  // DOM overlays
+  const lab=document.createElement("div");lab.className="abs label";lab.style.cssText+=`left:${ax-300}px;top:800px`;
+  lab.innerHTML=`<div class="spiral"></div><div class="txt">${c.name}</div>`;root.appendChild(lab);S.label=lab;S.ltxt=$(".txt",lab);
+  const nb=document.createElement("div");nb.className="abs";nb.style.cssText=`left:${nx-430}px;width:860px;top:290px;text-align:center`;
+  nb.innerHTML=`<div class="abs pbrush" style="left:140px;top:10px;width:580px;height:230px;opacity:.85"></div><div class="num" style="position:relative">0</div>`;
+  root.appendChild(nb);S.numBox=nb;S.num=$(".num",nb);
+  const un=document.createElement("div");un.className="abs unit";un.textContent="ســـــنــــة";un.style.cssText+=`left:${nx-430}px;width:860px;top:545px;text-align:center`;root.appendChild(un);S.unit=un;
+  const nt=document.createElement("div");nt.className="abs note";nt.textContent=c.note;nt.style.cssText+=`left:${nx-430}px;width:860px;top:650px;text-align:center`;root.appendChild(nt);S.note=nt;
   $("#scenes").appendChild(root);
-  scenes.push({c,root,g,circle,orange,sec:A.sec,main:A.main,cl1,cl2,pole,flag,label,num:$(".num",num),numBox:num,unit,note,s,ax});
+  scenes.push(S);
 });
 
 /* title + outro */
 const title=document.createElement("div");title.className="scene";
 title.innerHTML=`
- <div class="abs brushbg" id="tbg" style="left:300px;top:300px;width:1320px;height:300px"></div>
+ <div class="abs pbrush" id="tbg" style="left:300px;top:290px;width:1320px;height:300px"></div>
+ <div class="abs" id="tor" style="left:0;width:1920px;top:318px;text-align:center;font-weight:900;font-size:132px;color:#ee7a1d;white-space:nowrap">أقــدم المــدن المغربيــة</div>
  <div class="abs" id="ttxt" style="left:0;width:1920px;top:318px;text-align:center;font-weight:900;font-size:132px;color:#3a1a6e;white-space:nowrap">أقــدم المــدن المغربيــة</div>
- <div class="abs" id="tline" style="left:520px;top:560px;width:880px;height:26px;background:#ee7a1d;border-radius:14px;transform-origin:right"></div>
- <div class="abs" id="tsub" style="left:0;width:1920px;top:660px;text-align:center;font-weight:800;font-size:60px;color:#5b3a9a">رحلة عبر الزمن في ست مدن</div>
-`;
+ <div class="abs" id="tbar" style="left:0;top:470px;height:16px;width:320px;background:#ee7a1d;border-radius:0 0 0 14px;opacity:0"></div>
+ <div class="abs" id="tdrop" style="left:0;top:384px;width:26px;height:120px;background:#3a1a6e;border-radius:60% 40% 50% 50%/10% 10% 90% 90%;transform:rotate(-8deg);opacity:0"></div>
+ <div class="abs" id="tline" style="left:520px;top:590px;width:880px;height:22px;background:#ee7a1d;border-radius:14px;transform-origin:right"></div>
+ <div class="abs" id="tsub" style="left:0;width:1920px;top:680px;text-align:center;font-weight:800;font-size:60px;color:#5b3a9a">رحلة عبر الزمن في ست مدن</div>`;
 $("#scenes").appendChild(title);
 const outro=document.createElement("div");outro.className="scene";outro.style.background="#3a1a6e";
 outro.innerHTML=`
- <div class="abs" id="oring" style="left:810px;top:230px;width:300px;height:300px;border-radius:50%;border:12px solid #ee7a1d;background:#5b3a9a;display:flex;align-items:center;justify-content:center;overflow:hidden">${flagSVG.replace('width="150" height="100"','width="330" height="220"')}</div>
+ <div class="abs" id="oring" style="left:810px;top:230px;width:300px;height:300px;border-radius:50%;border:12px solid #ee7a1d;background:#5b3a9a;display:flex;align-items:center;justify-content:center;overflow:hidden"><svg viewBox="0 0 150 100" width="330" height="220">${flagInner}</svg></div>
  <div class="abs" id="othx" style="left:0;width:1920px;top:580px;text-align:center;font-weight:900;font-size:100px;color:#fff">شكرًا على المشاهدة</div>
  <div class="abs" id="opill" style="left:460px;top:760px;width:1000px;height:110px;border:5px solid #ee7a1d;border-radius:60px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:56px;color:#fff">اشترك في ${CHANNEL}</div>
  <div class="abs" id="odots" style="left:0;width:1920px;top:120px;text-align:center;font-weight:800;font-size:46px;color:#ee7a1d">أقدم المدن المغربية</div>`;
 $("#scenes").appendChild(outro);
-
-/* progress dots */
 CITIES.forEach(()=>{const d=document.createElement("i");$("#dots").appendChild(d)});
-/* wipe strips */
-const wipe=$("#wipe");
-wipe.innerHTML=`<div id="w1" style="width:260px;background:#ee7a1d"></div><div id="w2" style="width:3000px;background:#3a1a6e"></div><div id="w3" style="width:200px;background:#7b5bc0"></div>`;
 
-function show(el,v,d="block"){el.style.display=v?d:"none"}
+function show(e,v,d="block"){e.style.display=v?d:"none"}
+const twEl=(()=>{const m=document.createElement("span");m.style.cssText="position:absolute;visibility:hidden;white-space:nowrap;font:900 132px Cairo,Tajawal";m.textContent="أقــدم المــدن المغربيــة";document.body.appendChild(m);return m})();
 
 function renderFrame(t){
-  // --- title
+  const tw=twEl.getBoundingClientRect().width+60;
+  // ---------------- title ----------------
+  const tOut=eio(seg(t,4.7,5.8));
   show(title,t<T_TITLE+0.25);
   if(t<T_TITLE+0.25){
-    const a=eo3(seg(t,.2,.9)), b=eio(seg(t,.6,1.7)), l=eio(seg(t,1.4,2.2));
-    $("#tbg").style.opacity=a; $("#tbg").style.transform=`scale(${.85+.15*a})`;
-    $("#ttxt").style.clipPath=`inset(0 ${(1-b)*100}% 0 0)`;
-    $("#tline").style.transform=`scaleX(${l})`;
-    $("#tsub").style.opacity=eo3(seg(t,1.9,2.6)); $("#tsub").style.transform=`translateY(${(1-eo3(seg(t,1.9,2.6)))*30}px)`;
-    
-    $("#scenes").style.opacity=1;
+    const a=eo3(seg(t,.1,.6)), p=eio(seg(t,.5,2.5)), l=eio(seg(t,2.0,2.8));
+    $("#tbg").style.opacity=a*(1-tOut); $("#tbg").style.transform=`scale(${.8+.2*a})`;
+    const right=960+tw/2, leadX=right-p*tw;
+    const po=Math.min(1,p+0.07);
+    const ri=((1920-right)/1920*100).toFixed(2);
+    $("#ttxt").style.clipPath=`inset(0 ${ri}% 0 ${((right-p*tw)/1920*100).toFixed(2)}%)`;
+    $("#tor").style.clipPath=`inset(0 ${ri}% 0 ${((right-po*tw)/1920*100).toFixed(2)}%)`;
+    const barOp=p>0&&p<1?1:0;
+    $("#tbar").style.opacity=barOp; $("#tbar").style.left=(leadX-300)+"px"; $("#tbar").style.width=(300+ (1-p)*0)+"px";
+    $("#tdrop").style.opacity=barOp; $("#tdrop").style.left=(leadX-12)+"px";
+    $("#tline").style.transform=`scaleX(${l})`; $("#tline").style.opacity=1-tOut;
+    const sb=eo3(seg(t,2.9,3.6)); $("#tsub").style.opacity=sb*(1-tOut); $("#tsub").style.transform=`translateY(${(1-sb)*30}px)`;
+    title.style.transform=`translateY(${-tOut*160}px)`; title.style.opacity=1-eo3(seg(t,5.2,5.9));
   }
-  // --- cities
+  // ---------------- cities ----------------
+  let activeIdx=-1;
   scenes.forEach((S,i)=>{
-    const ls=t-STARTS[i];
-    const vis=ls>-0.02&&ls<DURS[i]+0.02;
-    show(S.root,vis); if(!vis)return;
-    const e0=0.12;
-    const k=(a,b)=>seg(ls,e0+a,e0+b);
-    S.g.style.transform=`scale(${1+0.035*seg(ls,0,DURS[i])})`;S.g.style.transformOrigin="50% 55%";
-    S.circle.style.transform=`scale(${eob(k(0,.55))})`;
-    S.orange.style.transform=`translateX(${(1-eo3(k(.1,.6)))*(S.s==="L"?-500:500)}px) rotate(${(1-eo3(k(.1,.6)))*-40}deg)`;
-    S.main.style.opacity=eo3(k(.2,.4)); S.main.style.transform=`translateY(${(1-eo3(k(.2,.75)))*140}px) scale(${.92+.08*eo3(k(.2,.75))})`;
-    if(S.sec){S.sec.style.opacity=eo3(k(.35,.55)); S.sec.style.transform=`translateY(${(1-eo3(k(.35,.9)))*100}px)`+(S.c.art==="marrakech"?" rotate(-6deg)":"")}
-    S.cl1.style.opacity=eo3(k(.5,.8)); S.cl1.style.transform=`translateX(${Math.sin(ls*.9)*18-(1-eo3(k(.5,1)))*80}px)`;
-    S.cl2.style.opacity=eo3(k(.6,.9)); S.cl2.style.transform=`translateX(${Math.cos(ls*.8)*14+(1-eo3(k(.6,1.1)))*80}px)`;
-    const fp=eob(k(.55,1.0));
-    S.pole.style.transform=`scaleY(${fp})`; S.flag.style.opacity=eo3(k(.7,.9));
-    S.flag.style.transform=`translateY(${(1-fp)*40}px) skewY(${Math.sin(ls*7)*4}deg) scaleX(${1+Math.sin(ls*7+1)*.03})`;
-    const lp=eo3(k(.7,1.2));
-    S.label.style.opacity=lp; S.label.style.transform=`translateX(${(1-lp)*(S.s==="L"?-420:420)}px) rotate(${(1-lp)*-4+(-1.5)}deg)`;
-    const np=eio(seg(ls,e0+1.0,e0+2.5));
+    const lt=t-STARTS[i];
+    const w0=i===0?-1.5:-0.65;
+    const vis=lt>w0&&lt<DURS[i]+0.02;
+    show(S.root,vis); if(!vis)return; activeIdx=i;
+    const {sg,ax,cx,cy,r}=S;
+    const q=Math.floor(t*10);                       // stop-motion "boil" at 10 fps
+    const jx=(hash(i,q)-.5)*2.4, jy=(hash(i,q+99)-.5)*2.4, jr=(hash(i,q+7)-.5)*0.35;
+    // sheet
+    if(S.sheet){const sp=eo3(seg(lt,-1.4,-0.5));const fo=1-eo3(seg(lt,1.7,2.3));
+      S.sheet.setAttribute("transform",`translate(${(1-sp)*-60},${(1-sp)*900}) rotate(${(1-sp)*9} ${ax} 450)`);S.sheet.setAttribute("opacity",fo);S.sheet.style.display=fo>0?"":"none";}
+    // bowl -> circle morph
+    const mp=eo3(seg(lt,-0.6,0.45)), m=0.06+0.94*eio(seg(lt,-0.25,0.7));
+    const rot=(1-mp)*-0.45*sg, dy=(1-mp)*650;
+    const sc=eob(seg(lt,-0.5,0.4))*0.12+0.88;
+    S.pur.setAttribute("d",circlePath(cx,cy+dy,r*sc,m,rot));
+    const orS=1-eo3(seg(lt,0.9,1.5));
+    S.orT.setAttribute("d",orangePath(cx,cy+dy,r*sc,m,rot,1.0)); S.orT.setAttribute("opacity",orS>0?1:0);
+    S.orT.setAttribute("transform",`translate(${cx} ${cy}) scale(${orS}) translate(${-cx} ${-cy})`);
+    const ob=eo3(seg(lt,1.2,1.9)); S.orB.setAttribute("transform",`translate(${(1-ob)*-200*sg},${(1-ob)*160})`); S.orB.setAttribute("opacity",ob);
+    // group shift (centre -> side) and jitter
+    const sh=eio(seg(lt,1.6,2.5));
+    S.grp.setAttribute("transform",`translate(${-(ax-960)*(1-sh)+jx},${jy}) rotate(${jr} 960 540)`);
+    // brush reveal of main photo
+    const pr=eio(seg(lt,0.35,1.45));
+    const L=S.len;
+    S.mp.setAttribute("stroke-dashoffset",L*(1-pr));
+    S.st1.setAttribute("stroke-dashoffset",L*(1-Math.min(1,pr*1.28)));
+    S.st2.setAttribute("stroke-dashoffset",L*(1-Math.min(1,pr*1.14)));
+    const cf=1-eo3(seg(lt,1.25,1.75));
+    S.st1.setAttribute("opacity",pr>0?cf:0);S.st2.setAttribute("opacity",pr>0?cf:0);
+    if(lt>1.9){S.mainG.removeAttribute("mask")}else{S.mainG.setAttribute("mask",`url(#m${i})`)}
+    // secondary scrap
+    const sp2=eo3(seg(lt,0.95,1.7));
+    S.secG.setAttribute("opacity",clamp(sp2*3));
+    S.secG.setAttribute("transform",`translate(${(1-sp2)*-420*sg},${(1-sp2)*60}) rotate(${(1-sp2)*-8} ${ax} 600)`);
+    // clouds + flag
+    const c1=eo3(seg(lt,1.1,2.0)), c2=eo3(seg(lt,1.2,2.1));
+    S.cl1.setAttribute("opacity",c1);S.cl1.setAttribute("transform",`translate(${(1-c1)*-260+Math.sin(t*.8+i)*14},0)`);
+    S.cl2.setAttribute("opacity",c2);S.cl2.setAttribute("transform",`translate(${(1-c2)*260+Math.cos(t*.7+i)*12},0)`);
+    const fp=eob(seg(lt,1.3,1.95));
+    S.pole.setAttribute("transform",`translate(0,${(1-fp)*300}) `);S.pole.setAttribute("opacity",clamp(fp*2));
+    S.flag.setAttribute("opacity",eo3(seg(lt,1.7,2.0)));
+    const wave=Math.sin(t*7+i)*4;
+    S.flag.setAttribute("transform",`translate(${ax+35},${90+(1-fp)*0}) skewY(${wave}) scale(${Math.max(0.04,fp)},${Math.max(0.04,fp)}) translate(0,0)`);
+    // label (writes itself)
+    const lp=eo3(seg(lt,1.5,2.2)), tp=eio(seg(lt,1.85,2.55));
+    S.label.style.opacity=clamp(lp*2); S.label.style.transform=`translate(${(1-lp)*(-440*sg)-(ax-960)*(1-sh)}px,${(1-lp)*40}px) rotate(${(1-lp)*-5-1.2}deg)`;
+    S.ltxt.style.clipPath=`inset(0 ${(1-tp)*100}% 0 0)`;
+    // number counter
+    const np=eio(seg(lt,1.95,3.45));
     S.num.textContent=Math.round(S.c.num*np).toLocaleString("en-US");
-    const nin=eo3(k(.9,1.2));
-    S.numBox.style.opacity=nin; S.numBox.style.transform=`translateY(${(1-nin)*50}px) scale(${1+.05*Math.sin(np*Math.PI)})`;
-    S.unit.style.opacity=eo3(seg(ls,e0+2.4,e0+2.8)); S.unit.style.transform=`translateY(${(1-eo3(seg(ls,e0+2.4,e0+2.8)))*30}px)`;
-    S.note.style.opacity=eo3(seg(ls,e0+2.8,e0+3.2)); S.note.style.transform=`translateY(${(1-eo3(seg(ls,e0+2.8,e0+3.2)))*30}px)`;
+    const nin=eo3(seg(lt,1.9,2.3));
+    S.numBox.style.opacity=nin; S.numBox.style.transform=`translateY(${(1-nin)*60}px) scale(${1+.05*Math.sin(np*Math.PI)})`;
+    const un=eo3(seg(lt,3.4,3.9)); S.unit.style.opacity=.25+.75*un; S.unit.style.transform=`translateY(${(1-un)*20}px)`; S.unit.style.opacity=(lt>3.3)?(.28+.72*un):0;
+    const nt=eo3(seg(lt,3.8,4.3)); S.note.style.opacity=nt; S.note.style.transform=`translateY(${(1-nt)*26}px)`;
+    // slow ambient parallax so long holds stay alive
+    S.artGroup.setAttribute("transform",`translate(${Math.sin(t*.6+i)*7},${Math.cos(t*.5+i)*5})`);
+    // ---- glitch exit ----
+    const xp=seg(lt,DURS[i]-0.85,DURS[i]);
+    if(xp>0){
+      const g=eio(xp);
+      $("#glt").setAttribute("seed",Math.floor(t*24)%50+1);
+      $("#gld").setAttribute("scale",(g*190).toFixed(1));
+      S.root.style.filter="url(#gl)";
+      const fl=hash(Math.floor(t*24),i)>0.28?1:0.4;
+      S.root.style.opacity=(1-eo3(seg(xp,0.35,1)))*(xp>0.3?fl:1);
+      S.root.style.transform=`scale(${1+g*0.03}) translateX(${(hash(Math.floor(t*30),i+3)-.5)*g*40}px)`;
+    } else { S.root.style.filter="none"; S.root.style.opacity=1; S.root.style.transform="none"; }
   });
-  // --- outro
-  const lo=t-T_OUT; show(outro,lo>-0.02);
-  if(lo>-0.02){
+  // ---------------- outro ----------------
+  const lo=t-T_OUT;
+  // iris: the last "bowl" inflates to a full purple screen
+  const ir=eio(seg(lo,-0.55,0.35));
+  show($("#iris"),ir>0&&lo<0.5);
+  $("#iris").style.transform=`scale(${0.2+ir*1.3})`; $("#iris").style.transformOrigin="50% 50%";
+  $("#iris").style.top=(560+(1-ir)*500)+"px";
+  show(outro,lo>0.02);
+  if(lo>0.02){
     $("#oring").style.transform=`scale(${eob(seg(lo,.2,.9))})`;
-    $("#othx").style.opacity=eo3(seg(lo,.7,1.3));$("#othx").style.transform=`translateY(${(1-eo3(seg(lo,.7,1.3)))*40}px)`;
-    $("#opill").style.opacity=eo3(seg(lo,1.2,1.8));$("#opill").style.transform=`scale(${.9+.1*eo3(seg(lo,1.2,1.8))})`;
+    const th=eo3(seg(lo,.7,1.3));$("#othx").style.opacity=th;$("#othx").style.transform=`translateY(${(1-th)*40}px)`;
+    const pl=eo3(seg(lo,1.2,1.8));$("#opill").style.opacity=pl;$("#opill").style.transform=`scale(${.9+.1*pl})`;
     $("#odots").style.opacity=eo3(seg(lo,.1,.6));
   }
-  // --- progress dots
-  const ci=STARTS.filter(x=>t>=x-0.01).length-1;
+  // ---------------- dots + hatch ----------------
   show($("#dots"),t>T_TITLE+0.4&&t<T_OUT-0.2,"flex");
-  [...$("#dots").children].forEach((d,i)=>{d.style.background=i===ci?"#ee7a1d":(i<ci?"#5b3a9a":"#cfc8dc")});
-  // --- wipes at boundaries
-  let wp=-1;
-  for(const tb of STARTS.concat([T_OUT])){const p=(t-(tb-.45))/.9;if(p>=0&&p<=1){wp=p;break}}
-  show(wipe,wp>=0);
-  if(wp>=0){
-    const e=eio(wp), L=2170-5420*e;
-    $("#w2").style.left=L+"px"; $("#w1").style.left=(L-200)+"px"; $("#w3").style.left=(L-400)+"px";
-    wipe.style.filter="url(#rough)";
-  }
+  const ci=STARTS.filter(x=>t>=x-0.01).length-1;
+  [...$("#dots").children].forEach((d,k)=>{d.style.background=k===ci?"#ee7a1d":(k<ci?"#5b3a9a":"#cfc8dc")});
+  let hv=0;for(const tb of STARTS.concat([T_OUT])){const d=t-tb;if(d>-0.7&&d<0.3)hv=Math.max(hv,1-Math.abs(d+0.2)/0.5)}
+  $("#hatch").style.opacity=clamp(hv)*0.9;
 }
 window.renderFrame=renderFrame; window.T_END=T_END;
 renderFrame(0);
