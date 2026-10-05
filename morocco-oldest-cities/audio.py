@@ -1,8 +1,10 @@
 import math, random, struct, wave, sys
 SR = 44100
-T_TITLE, SC, N = 3.4, 4.4, 6
-T_OUT = T_TITLE + N * SC
-END = T_OUT + 4.2
+T_TITLE, N = 6.0, 6
+DURS = [5.7, 6.4, 7.2, 5.9, 8.1, 10.3]
+STARTS = [T_TITLE + sum(DURS[:i]) for i in range(N)]
+T_OUT = T_TITLE + sum(DURS)
+END = T_OUT + 4.6
 L = [0.0] * int(END * SR)
 R = [0.0] * int(END * SR)
 random.seed(5)
@@ -83,12 +85,11 @@ add(1.55, noise_sweep(0.7, 900, 5200, gain=1.0), 0.14)
 add(1.5, thump(0.4, 180, 55, 1.0), 0.28)
 
 # ---------- wipes + scenes ----------
-for i in range(N + 1):
-    tb = T_TITLE + i * SC
+for i, tb in enumerate(STARTS + [T_OUT]):
     add(tb - 0.5, noise_sweep(1.0, 3800, 380, gain=1.6), 0.40, 0.0)      # whoosh
     add(tb - 0.04, thump(0.45, 130, 40, 1.0), 0.30)                       # impact under the cover
 for i in range(N):
-    s0 = T_TITLE + i * SC; e0 = 0.12
+    s0 = STARTS[i]; e0 = 0.12
     add(s0 + e0 + 0.02, thump(0.3, 220, 70, 1.0), 0.20)                   # circle pop
     add(s0 + e0 + 0.22, noise_sweep(0.5, 600, 2400, gain=1.0), 0.12)      # image rises
     add(s0 + e0 + 0.45, tone(880 * 1.0, .18, a=.002, d=.06, harm=(1, .3)), 0.07)   # cloud ping

@@ -52,7 +52,10 @@ html,body{width:1920px;height:1080px;background:#000;overflow:hidden}
 <script>
 /* ===================== CONFIG (edit here) ===================== */
 const CHANNEL = "اسم قناتك";
-const T_TITLE = 3.4, SC = 4.4, T_OUT = T_TITLE + 6*SC, T_END = T_OUT + 4.2;
+const T_TITLE = 6.0;
+const DURS = [5.7, 6.4, 7.2, 5.9, 8.1, 10.3];           // seconds per city (fits the voiceover)
+const STARTS = DURS.map((d,i)=>T_TITLE + DURS.slice(0,i).reduce((a,b)=>a+b,0));
+const T_OUT = T_TITLE + DURS.reduce((a,b)=>a+b,0), T_END = T_OUT + 4.6;
 const CITIES = [
  {name:"طنجـــة",   num:2500, note:"(منذ نحو القرن 5 ق.م)", side:"L", art:"tangier"},
  {name:"فـــاس",    num:1200, note:"(منذ 789م)",             side:"R", art:"fes"},
@@ -205,12 +208,12 @@ function renderFrame(t){
   }
   // --- cities
   scenes.forEach((S,i)=>{
-    const ls=t-(T_TITLE+i*SC);
-    const vis=ls>-0.02&&ls<SC+0.02;
+    const ls=t-STARTS[i];
+    const vis=ls>-0.02&&ls<DURS[i]+0.02;
     show(S.root,vis); if(!vis)return;
     const e0=0.12;
     const k=(a,b)=>seg(ls,e0+a,e0+b);
-    S.g.style.transform=`scale(${1+0.035*seg(ls,0,SC)})`;S.g.style.transformOrigin="50% 55%";
+    S.g.style.transform=`scale(${1+0.035*seg(ls,0,DURS[i])})`;S.g.style.transformOrigin="50% 55%";
     S.circle.style.transform=`scale(${eob(k(0,.55))})`;
     S.orange.style.transform=`translateX(${(1-eo3(k(.1,.6)))*(S.s==="L"?-500:500)}px) rotate(${(1-eo3(k(.1,.6)))*-40}deg)`;
     S.main.style.opacity=eo3(k(.2,.4)); S.main.style.transform=`translateY(${(1-eo3(k(.2,.75)))*140}px) scale(${.92+.08*eo3(k(.2,.75))})`;
@@ -238,12 +241,12 @@ function renderFrame(t){
     $("#odots").style.opacity=eo3(seg(lo,.1,.6));
   }
   // --- progress dots
-  const ci=Math.floor((t-T_TITLE)/SC);
+  const ci=STARTS.filter(x=>t>=x-0.01).length-1;
   show($("#dots"),t>T_TITLE+0.4&&t<T_OUT-0.2,"flex");
   [...$("#dots").children].forEach((d,i)=>{d.style.background=i===ci?"#ee7a1d":(i<ci?"#5b3a9a":"#cfc8dc")});
   // --- wipes at boundaries
   let wp=-1;
-  for(let i=0;i<=6;i++){const tb=T_TITLE+i*SC;const p=(t-(tb-.45))/.9;if(p>=0&&p<=1){wp=p;break}}
+  for(const tb of STARTS.concat([T_OUT])){const p=(t-(tb-.45))/.9;if(p>=0&&p<=1){wp=p;break}}
   show(wipe,wp>=0);
   if(wp>=0){
     const e=eio(wp), L=2170-5420*e;
