@@ -51,7 +51,7 @@ html,body{width:1920px;height:1080px;background:#000;overflow:hidden}
 </div>
 <script>
 /* ===================== CONFIG (edit here) ===================== */
-const CHANNEL = "اسم قناتك";
+const CHANNEL = "لبنان راح ترجع";
 const T_TITLE = 6.0;
 const DURS = [5.7, 6.4, 7.2, 5.9, 8.1, 10.3];           // seconds per city (fits the voiceover)
 const STARTS = DURS.map((d,i)=>T_TITLE + DURS.slice(0,i).reduce((a,b)=>a+b,0));
@@ -182,7 +182,7 @@ const outro=document.createElement("div");outro.className="scene";outro.style.ba
 outro.innerHTML=`
  <div class="abs" id="oring" style="left:810px;top:230px;width:300px;height:300px;border-radius:50%;border:12px solid #ee7a1d;background:#5b3a9a;display:flex;align-items:center;justify-content:center;overflow:hidden">${flagSVG.replace('width="150" height="100"','width="330" height="220"')}</div>
  <div class="abs" id="othx" style="left:0;width:1920px;top:580px;text-align:center;font-weight:900;font-size:100px;color:#fff">شكرًا على المشاهدة</div>
- <div class="abs" id="opill" style="left:610px;top:760px;width:700px;height:110px;border:5px solid #ee7a1d;border-radius:60px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:56px;color:#fff">اشترك في ${CHANNEL}</div>
+ <div class="abs" id="opill" style="left:460px;top:760px;width:1000px;height:110px;border:5px solid #ee7a1d;border-radius:60px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:56px;color:#fff">اشترك في ${CHANNEL}</div>
  <div class="abs" id="odots" style="left:0;width:1920px;top:120px;text-align:center;font-weight:800;font-size:46px;color:#ee7a1d">أقدم المدن المغربية</div>`;
 $("#scenes").appendChild(outro);
 
