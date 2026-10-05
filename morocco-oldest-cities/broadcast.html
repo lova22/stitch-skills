@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>أقدم المدن المغربية — Broadcast</title>
+<style>
+@font-face{font-family:Cairo;font-weight:900;src:url(fonts/cairo900.ttf)}
+@font-face{font-family:Tajawal;font-weight:900;src:url(fonts/tajawal900.ttf)}
+@font-face{font-family:Tajawal;font-weight:800;src:url(fonts/tajawal800.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;background:#000;overflow:hidden}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#04060d;font-family:Cairo,Tajawal,sans-serif;color:#fff}
+#bg{position:absolute;inset:0}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;display:none}
+.t{position:absolute;white-space:nowrap;text-align:center;line-height:1}
+.face{background:linear-gradient(180deg,#fffbe8 0%,#ffe9a0 22%,#f8c85a 48%,#c98e1c 74%,#ffe29a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ext{color:#6e4a0c;text-shadow:0 1px 0 #8a5d10,0 2px 0 #8a5d10,0 3px 0 #7d540e,0 4px 0 #7d540e,0 5px 0 #70490c,0 6px 0 #70490c,0 7px 0 #633f0a,0 8px 0 #633f0a,0 9px 0 #563608,0 10px 0 #563608,0 24px 34px rgba(0,0,0,.65)}
+.white{color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.35),0 16px 30px rgba(0,0,0,.55)}
+.skw{transform:skewX(-10deg)}
+.panelwrap{position:absolute;width:880px;height:560px}
+.glass{background:linear-gradient(135deg,rgba(18,28,60,.90),rgba(8,12,30,.82));border-top:5px solid #f6c453;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 60px rgba(120,160,255,.08)}
+#ticker{position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(180deg,#d6303f,#a81a2a);overflow:hidden;box-shadow:0 -8px 24px rgba(0,0,0,.5)}
+#tickertxt{position:absolute;top:0;height:56px;line-height:58px;font-weight:900;font-size:30px;color:#fff;white-space:nowrap;letter-spacing:1px}
+#tickercap{position:absolute;right:0;top:0;width:190px;height:56px;background:#f6c453;color:#3a2606;font-weight:900;font-size:30px;line-height:58px;text-align:center;clip-path:polygon(0 0,100% 0,100% 100%,22px 100%)}
+#flagbug{position:absolute;left:56px;top:44px;width:150px;height:60px;border-radius:8px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.5)}
+#chy{position:absolute;right:56px;top:44px;height:60px;display:flex;align-items:center;direction:rtl}
+#tl{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:0}
+#tr{position:absolute;inset:0;pointer-events:none;display:none;overflow:hidden}
+#tr div{position:absolute;top:-200px;height:1500px;transform:skewX(-16deg)}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#fx{position:absolute;inset:0;pointer-events:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<filter id="hb" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur id="hbd" stdDeviation="0 0"/></filter>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c0"/><stop offset=".5" stop-color="#f6c453"/><stop offset="1" stop-color="#b8861b"/></linearGradient>
+</defs></svg>
+<div id="stage">
+  <canvas id="bg" width="1920" height="1080"></canvas>
+  <div id="cam">
+    <div id="scenes"></div>
+    <div id="tl"></div>
+  </div>
+  <div id="ticker"><div id="tickertxt"></div><div id="tickercap">أخبار التاريخ</div></div>
+  <div id="flagbug"><svg viewBox="0 0 150 60" width="150" height="60"><rect width="150" height="60" fill="#c1272d"/><polygon points="75,10 80.6,26.5 98,26.5 83.9,36.8 89.3,53.3 75,43.1 60.7,53.3 66.1,36.8 52,26.5 69.4,26.5" fill="none" stroke="#00a65a" stroke-width="3.4"/></svg></div>
+  <div id="chy"></div>
+  <canvas id="fx" width="1920" height="1080"></canvas>
+  <div id="tr"></div>
+  <div id="flash"></div>
+</div>
+<script>
+/* ===================== TIMELINE (locked to the voiceover) ===================== */
+const CHANNEL="لبنان راح ترجع";
+const T_INTRO=6.0;
+const DURS=[5.7,6.4,7.2,5.9,8.1,10.3];
+const STARTS=DURS.map((d,i)=>T_INTRO+DURS.slice(0,i).reduce((a,b)=>a+b,0));
+const T_OUT=T_INTRO+DURS.reduce((a,b)=>a+b,0), T_END=T_OUT+4.6;
+const BOUNDS=STARTS.concat([T_OUT]);
+const CITIES=[
+ {key:"tangier",name:"طنجة",tag:"بوابة المغرب نحو أوروبا",num:2500,note:"منذ نحو القرن 5 ق.م",year:-500,side:"R",acc:[42,167,255]},
+ {key:"fes",name:"فاس",tag:"العاصمة الروحية للمملكة",num:1200,note:"منذ 789م",year:789,side:"L",acc:[58,134,255]},
+ {key:"marrakech",name:"مراكش",tag:"المدينة الحمراء",num:950,note:"منذ 1070م",year:1070,side:"R",acc:[255,94,58]},
+ {key:"rabat",name:"الرباط",tag:"رباط الفتح",num:850,note:"منذ نحو 1150م",year:1150,side:"L",acc:[236,190,70]},
+ {key:"chef",name:"شفشاون",tag:"اللؤلؤة الزرقاء",num:550,note:"منذ 1471م",year:1471,side:"R",acc:[64,170,255]},
+ {key:"agadir",name:"أكادير",tag:"عاصمة سوس",num:520,note:"منذ 1505م",year:1505,side:"L",acc:[255,170,60]},
+];
+/* ===================== helpers ===================== */
+const $=(s,r=document)=>r.querySelector(s);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eo3=x=>1-Math.pow(1-clamp(x),3);
+const eo5=x=>1-Math.pow(1-clamp(x),5);
+const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const lerp=(a,b,x)=>a+(b-a)*x;
+const sp=(t,f=2.4,z=0.55)=>{if(t<=0)return 0;const w=2*Math.PI*f,wd=w*Math.sqrt(1-z*z);return 1-Math.exp(-z*w*t)*(Math.cos(wd*t)+(z*w/wd)*Math.sin(wd*t))};
+const hash=(a,b=0)=>{const x=Math.sin(a*127.1+b*311.7)*43758.5453;return x-Math.floor(x)};
+const ease=eo3;
+function div(parent,css,html){const d=document.createElement("div");d.style.cssText=css||"";if(html!=null)d.innerHTML=html;parent.appendChild(d);return d}
+function gtext(parent,txt,size,x,y,w,extra=""){ // gold extruded text, centred at x, top y
+  const wrap=div(parent,`position:absolute;left:${x-w/2}px;top:${y}px;width:${w}px;height:${size*1.25}px;${extra}`);
+  div(wrap,`position:absolute;inset:0;font-weight:900;font-size:${size}px;line-height:${size*1.25}px;text-align:center;white-space:nowrap`,txt).className="ext";
+  const f=div(wrap,`position:absolute;inset:0;font-weight:900;font-size:${size}px;line-height:${size*1.25}px;text-align:center;white-space:nowrap`,txt);f.className="face";
+  return wrap;
+}
+const flagSVG=`<svg viewBox="0 0 150 100" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><rect width="150" height="100" fill="#c1272d"/><polygon points="75,22 82.6,45.4 107.2,45.4 87.3,59.9 94.9,83.3 75,68.8 55.1,83.3 62.7,59.9 42.8,45.4 67.4,45.4" fill="none" stroke="#00a65a" stroke-width="5"/></svg>`;
+const dataSVG=s=>"data:image/svg+xml;utf8,"+encodeURIComponent(s);
+function tangierSVG(){
+  const r=(function(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}})(11);let h="";
+  for(let row=0;row<9;row++){for(let i=0;i<14;i++){const x=40+i*38+(row%2)*18+r()*8,y=250+row*24-i*6.5+r()*6,w=30+r()*10,hh=24+r()*10;if(y<150||y>420)continue;
+    h+=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" fill="#f6efe2"/><rect x="${x+w-7}" y="${y}" width="7" height="${hh}" fill="#d6cbb4"/><rect x="${x+6}" y="${y+7}" width="7" height="10" fill="${r()>.6?'#4f86c6':'#26335e'}"/>`}}
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" width="640" height="520"><defs><clipPath id="hill"><path d="M0 330 C80 250 160 190 270 160 C380 135 470 160 560 230 L640 260 L640 420 L0 420Z"/></clipPath></defs>
+  <path d="M0 330 C80 250 160 190 270 160 C380 135 470 160 560 230 L640 260 L640 420 L0 420Z" fill="#c9b79a"/><g clip-path="url(#hill)">${h}</g>
+  <rect x="330" y="120" width="170" height="150" fill="#f1e8d4"/><rect x="330" y="120" width="170" height="14" fill="#d8cdb6"/>
+  ${[0,1,2,3,4,5,6].map(i=>`<rect x="${332+i*24}" y="106" width="14" height="16" fill="#f1e8d4"/>`).join("")}
+  <path d="M385 270 v-70 a30 30 0 0 1 60 0 v70z" fill="#26335e"/><path d="M395 270 v-66 a20 20 0 0 1 40 0 v66z" fill="#ee7a1d"/>
+  <rect x="215" y="90" width="58" height="190" fill="#f1e8d4"/><rect x="215" y="120" width="58" height="34" fill="#2f7f86"/><rect x="204" y="78" width="80" height="14" fill="#d8cdb6"/><rect x="226" y="52" width="36" height="28" fill="#f1e8d4"/>
+  <circle cx="244" cy="42" r="9" fill="#e8b23a"/><rect x="236" y="190" width="16" height="36" rx="8" fill="#26335e"/>
+  <path d="M0 400 C120 380 200 420 320 400 C440 380 520 420 640 396 V520 H0Z" fill="#1f6fb0"/><path d="M0 440 C120 420 200 460 320 440 C440 420 520 460 640 436 V520 H0Z" fill="#4f9fd6"/><path d="M0 482 C120 466 200 498 320 482 C440 466 520 498 640 480 V520 H0Z" fill="#9bcbe9"/></svg>`;
+}
+const zellige=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120"><defs><pattern id="z" width="60" height="60" patternUnits="userSpaceOnUse"><rect width="60" height="60" fill="#12204a"/><rect x="13" y="13" width="34" height="34" fill="#f6c453"/><rect x="13" y="13" width="34" height="34" fill="#c1272d" transform="rotate(45 30 30)"/><circle cx="30" cy="30" r="7" fill="#12204a"/></pattern></defs><rect width="120" height="120" fill="url(#z)"/></svg>`;
+
+/* ===================== layout constants ===================== */
+const PW=880,PH=560, PCX={R:1320,L:600}, TCX={R:560,L:1360}, PCY=430;
+const YR0=-500,YR1=2026, TLX0=1740, TLX1=180, TLY=950;
+const yx=y=>TLX0-(y-YR0)/(YR1-YR0)*(TLX0-TLX1);
+
+/* ===================== build: intro ===================== */
+const scenesEl=$("#scenes");
+const intro=div(scenesEl,"position:absolute;inset:0;display:none");
+const I={};
+I.star=div(intro,"position:absolute;left:870px;top:90px;width:180px;height:180px;perspective:600px");
+I.starIn=div(I.star,`position:absolute;inset:0;border-radius:50%;overflow:hidden;border:8px solid #f6c453;box-shadow:0 0 60px rgba(246,196,83,.55);transform-style:preserve-3d`,flagSVG);
+I.l1=gtext(intro,"أقدم المدن",190,960,150,1500);
+I.l2=gtext(intro,"المغربية",270,960,330,1500);
+I.rule=div(intro,"position:absolute;left:360px;top:680px;width:1200px;height:6px;background:linear-gradient(90deg,transparent,#f6c453,transparent);transform-origin:50% 50%");
+I.bar=div(intro,"position:absolute;left:380px;top:715px;width:1160px;height:84px;background:linear-gradient(90deg,#a81a2a,#d6303f);transform:skewX(-10deg);transform-origin:100% 50%;box-shadow:0 14px 30px rgba(0,0,0,.5)");
+I.barT=div(intro,"position:absolute;left:380px;top:715px;width:1160px;height:84px;line-height:84px;text-align:center;font-weight:900;font-size:46px;color:#fff;white-space:nowrap","6 مدن  •  أكثر من 2500 سنة من التاريخ");
+I.cards=CITIES.map((c,i)=>{const d=div(intro,`position:absolute;left:${1700-i*288-130}px;top:855px;width:260px;height:92px;transform:skewX(-10deg);background:linear-gradient(135deg,rgba(24,36,76,.92),rgba(10,16,38,.9));border-top:4px solid #f6c453;box-shadow:0 14px 30px rgba(0,0,0,.5)`);
+  div(d,"position:absolute;right:0;top:0;width:70px;height:100%;background:#c1272d;transform:none");
+  div(d,"position:absolute;right:0;top:0;width:70px;height:88px;line-height:88px;text-align:center;font-weight:900;font-size:46px;font-family:Tajawal;transform:skewX(10deg)",String(i+1));
+  div(d,"position:absolute;left:0;top:0;width:180px;height:88px;line-height:88px;text-align:center;font-weight:900;font-size:44px;transform:skewX(10deg);white-space:nowrap",c.name);return d});
+
+/* ===================== build: city scenes ===================== */
+const S=[];
+CITIES.forEach((c,i)=>{
+  const root=div(scenesEl,"position:absolute;inset:0;display:none");
+  const P=c.side, cxP=PCX[P], cxT=TCX[P];
+  const o={c,i,root,P,cxP,cxT};
+  // giant outlined rank number behind
+  o.rank=div(root,`position:absolute;left:${cxT-480}px;top:70px;width:960px;height:760px;line-height:760px;text-align:center;font-family:Tajawal;font-weight:900;font-size:760px;color:transparent;-webkit-text-stroke:5px rgba(255,255,255,.17);`,"0"+(i+1));
+  // panel group
+  o.pg=div(root,`position:absolute;left:${cxP-PW/2}px;top:${PCY-PH/2}px;width:${PW}px;height:${PH}px;perspective:1600px`);
+  o.pr=div(o.pg,`position:absolute;inset:0;transform:translate(-34px,28px) skewX(-10deg);background:linear-gradient(135deg,#d6303f,#8f1422);box-shadow:0 30px 60px rgba(0,0,0,.5)`);
+  o.pgn=div(o.pg,`position:absolute;inset:0;transform:translate(26px,-24px) skewX(-10deg);border:5px solid #00a65a;box-shadow:0 0 30px rgba(0,166,90,.45)`);
+  o.pm=div(o.pg,`position:absolute;inset:0;transform:skewX(-10deg);overflow:hidden;border:6px solid #f6c453;background:#0a1020;box-shadow:0 0 50px rgba(246,196,83,.35),0 30px 60px rgba(0,0,0,.6)`);
+  o.pin=div(o.pm,`position:absolute;left:-110px;top:0;width:${PW+220}px;height:${PH}px;transform:skewX(10deg);transform-origin:50% 50%`);
+  buildPhoto(o,c);
+  // shine + scan + vignette
+  o.shine=div(o.pm,`position:absolute;top:-50px;height:700px;width:150px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-10deg);mix-blend-mode:screen;opacity:.0`);
+  div(o.pm,"position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.10) 0 2px,transparent 2px 5px);mix-blend-mode:multiply");
+  div(o.pm,"position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(0,0,0,.55) 100%)");
+  o.pgrad=div(o.pm,"position:absolute;left:0;right:0;bottom:0;height:200px;background:linear-gradient(0deg,rgba(4,6,14,.85),transparent)");
+  // HUD corner brackets on panel
+  o.br=[0,1,2,3].map(k=>{const sx=k%2?1:-1,sy=k<2?1:-1;return div(o.pg,`position:absolute;${k%2?"right":"left"}:-18px;${k<2?"top":"bottom"}:-18px;width:60px;height:60px;border-${k<2?"top":"bottom"}:6px solid #fff;border-${k%2?"right":"left"}:6px solid #fff;opacity:.9`)});
+  // name
+  o.name=gtext(root,c.name,230,cxT,130,1300);
+  // tagline bar
+  o.tagbar=div(root,`position:absolute;left:${cxT-370}px;top:395px;width:740px;height:74px;background:linear-gradient(90deg,#a81a2a,#d6303f);transform:skewX(-10deg);transform-origin:${P==="R"?"100%":"0%"} 50%;box-shadow:0 12px 26px rgba(0,0,0,.5)`);
+  o.tagt=div(root,`position:absolute;left:${cxT-370}px;top:395px;width:740px;height:74px;line-height:76px;text-align:center;font-weight:900;font-size:40px;white-space:nowrap`,c.tag);
+  // stat card
+  o.card=div(root,`position:absolute;left:${cxT-370}px;top:500px;width:740px;height:330px;transform:skewX(-6deg)`);
+  o.cardbg=div(o.card,"position:absolute;inset:0",""); o.cardbg.className="glass";
+  o.cardin=div(o.card,"position:absolute;inset:0;transform:skewX(6deg)");
+  div(o.cardin,"position:absolute;left:0;right:0;top:14px;height:34px;line-height:34px;text-align:center;font-weight:800;font-size:26px;color:#f6c453;letter-spacing:3px","عمر المدينة");
+  o.num=div(o.cardin,"position:absolute;left:0;right:0;top:66px;height:190px;line-height:190px;text-align:center;font-family:Tajawal;font-weight:900;font-size:196px;direction:ltr;white-space:nowrap;letter-spacing:-3px");o.num.className="face";
+  o.numx=div(o.cardin,"position:absolute;left:0;right:0;top:66px;height:190px;line-height:190px;text-align:center;font-family:Tajawal;font-weight:900;font-size:196px;direction:ltr;white-space:nowrap;letter-spacing:-3px;color:#5a3d08;z-index:-1;text-shadow:0 8px 0 #5a3d08,0 22px 30px rgba(0,0,0,.6)");
+  o.unit=div(o.cardin,"position:absolute;left:0;right:0;top:252px;height:64px;line-height:64px;text-align:center;font-weight:900;font-size:56px;color:#fff;letter-spacing:8px","سنة");
+  o.shim=div(o.card,"position:absolute;top:0;height:100%;width:120px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);mix-blend-mode:screen");
+  o.noteBox=div(root,`position:absolute;left:${cxT-370}px;top:846px;width:740px;height:62px;line-height:62px;text-align:center;font-weight:900;font-size:44px;color:#f6c453;white-space:nowrap;text-shadow:0 4px 0 rgba(0,0,0,.4)`,c.note);
+  S.push(o);
+});
+function buildPhoto(o,c){
+  const p=o.pin, W=PW+220;
+  const img=(src,css)=>{const i=document.createElement("img");i.src=src;i.style.cssText="position:absolute;"+css;p.appendChild(i);return i};
+  const bgGrad=(a,b,c2)=>div(p,`position:absolute;inset:0;background:linear-gradient(180deg,${a},${b} 62%,${c2})`);
+  o.kb=div(p,`position:absolute;inset:0;transform-origin:50% 55%`);   // Ken-Burns layer
+  const K=o.kb;
+  const kimg=(src,css)=>{const i=document.createElement("img");i.src=src;i.style.cssText="position:absolute;"+css;K.appendChild(i);return i};
+  switch(c.key){
+   case "tangier":
+     div(K,`position:absolute;inset:0;background:linear-gradient(180deg,#2a2f77 0%,#c8457a 38%,#ff9a5a 62%,#ffd28a 100%)`);
+     div(K,`position:absolute;left:${W*0.5-110}px;top:150px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#fff6d6 0,#ffd27a 40%,rgba(255,150,80,0) 70%)`);
+     kimg(dataSVG(tangierSVG()),`left:${W/2-390}px;top:62px;width:780px;height:634px`);
+     div(p,`position:absolute;right:30px;bottom:18px;font-weight:800;font-size:22px;color:rgba(255,255,255,.85);transform:none`,"رسم توضيحي"); break;
+   case "fes":
+     kimg("assets/fes_gate.jpg",`left:${(W-980)/2}px;top:${(PH-653)/2}px;width:980px;height:653px;filter:contrast(1.12) saturate(1.2)`); break;
+   case "marrakech":
+     div(K,`position:absolute;inset:0;background:linear-gradient(180deg,#3a1030 0%,#b0293f 40%,#ff7a3c 70%,#ffd08a 100%)`);
+     div(K,`position:absolute;left:${W*0.5-260}px;top:160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,238,190,.95) 0,rgba(255,170,90,.55) 38%,rgba(255,120,60,0) 70%)`);
+     kimg(dataSVG(zellige),`left:0;bottom:0;width:${W}px;height:90px;object-fit:cover;opacity:.55`);
+     kimg("assets/marr_minaret.png",`left:${W/2-240}px;top:-4px;width:360px;height:540px;transform:scale(1.04);filter:drop-shadow(0 0 40px rgba(255,150,80,.6))`);
+     kimg("assets/marr_minaret.png",`left:${W/2+60}px;top:130px;width:220px;height:330px;opacity:.35;filter:blur(2px) brightness(.7)`); break;
+   case "rabat":
+     kimg("assets/rabat_sunset.png",`left:0;top:-20px;width:${W}px;height:${PH+60}px;object-fit:cover;filter:blur(22px) brightness(.8) saturate(1.6);transform:scale(1.2)`);
+     kimg("assets/rabat_sunset.png",`left:${(W-600)/2}px;top:-6px;width:600px;height:588px;filter:contrast(1.1) saturate(1.2);-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);`); break;
+   case "chef":
+     kimg("assets/chef.jpg",`left:0;top:-20px;width:${W}px;height:${PH+60}px;object-fit:cover;filter:blur(22px) brightness(.85) saturate(1.6);transform:scale(1.2)`);
+     kimg("assets/chef.jpg",`left:${(W-600)/2}px;top:-20px;width:600px;height:600px;filter:contrast(1.1) saturate(1.2);-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);`); break;
+   case "agadir":
+     kimg("assets/agadir_beach.png",`left:${(W-1100)/2}px;top:${(PH-574)/2}px;width:1100px;height:574px;filter:contrast(1.08) saturate(0.95) brightness(0.82)`); break;
+  }
+  // accent colour grade
+  o.grade=div(p,`position:absolute;inset:0;mix-blend-mode:soft-light;background:linear-gradient(135deg,rgba(${c.acc.join(",")},.55),rgba(193,39,45,.35))`);
+}
+/* ===================== build: outro ===================== */
+const outro=div(scenesEl,"position:absolute;inset:0;display:none");
+const O={};
+O.thx=gtext(outro,"شكرًا على المشاهدة",170,960,170,1700);
+O.rule=div(outro,"position:absolute;left:460px;top:410px;width:1000px;height:6px;background:linear-gradient(90deg,transparent,#f6c453,transparent)");
+O.ch=div(outro,"position:absolute;left:360px;top:470px;width:1200px;height:150px;transform:skewX(-10deg);background:linear-gradient(135deg,rgba(24,36,76,.94),rgba(10,16,38,.9));border-top:6px solid #f6c453;box-shadow:0 30px 60px rgba(0,0,0,.6)");
+O.cht=div(outro,"position:absolute;left:360px;top:470px;width:1200px;height:150px;line-height:156px;text-align:center;font-weight:900;font-size:92px;white-space:nowrap",CHANNEL);
+O.btn=div(outro,"position:absolute;left:660px;top:690px;width:600px;height:120px;border-radius:70px;background:linear-gradient(180deg,#ee4050,#b01a2b);box-shadow:0 0 0 6px rgba(255,255,255,.9),0 24px 50px rgba(0,0,0,.6);line-height:120px;text-align:center;font-weight:900;font-size:64px","🔔 &nbsp;اشترك الآن");
+O.dots=CITIES.map((c,i)=>{const x=1560-i*240;const d=div(outro,`position:absolute;left:${x-100}px;top:880px;width:200px;height:56px;text-align:center`);
+  div(d,"position:absolute;left:84px;top:0;width:32px;height:32px;border-radius:50%;background:#f6c453;box-shadow:0 0 24px rgba(246,196,83,.8)");
+  div(d,"position:absolute;left:0;top:34px;width:200px;height:30px;line-height:30px;font-weight:800;font-size:26px;color:rgba(255,255,255,.85)",c.name);return d});
+
+/* ===================== HUD ===================== */
+const ticks=[-500,0,500,1000,1500,2000];
+const tl=$("#tl");
+div(tl,`position:absolute;left:${TLX1-30}px;top:${TLY}px;width:${TLX0-TLX1+60}px;height:5px;background:linear-gradient(90deg,#6c5114,#f6c453);border-radius:3px`);
+ticks.forEach(y=>{div(tl,`position:absolute;left:${yx(y)-2}px;top:${TLY-10}px;width:4px;height:25px;background:rgba(255,255,255,.6)`);
+  div(tl,`position:absolute;left:${yx(y)-80}px;top:${TLY+18}px;width:160px;text-align:center;font-weight:800;font-size:24px;color:rgba(255,255,255,.7)`,y<0?(-y)+" ق.م":(y===0?"0":y+"م"))});
+const tlM=CITIES.map((c,i)=>{const x=yx(c.year);const m=div(tl,`position:absolute;left:${x-15}px;top:${TLY-13}px;width:30px;height:30px;border-radius:50%;background:#fff;border:6px solid #c1272d;box-shadow:0 0 22px rgba(246,196,83,.9);opacity:0`);
+  const lab=div(tl,`position:absolute;left:${x-100}px;top:${TLY-62}px;width:200px;text-align:center;font-weight:900;font-size:30px;opacity:0;text-shadow:0 3px 8px #000`,c.name);return{m,lab,x}});
+$("#chy").innerHTML=`<div style="width:12px;height:60px;background:#f6c453;margin-left:12px"></div><div style="font-weight:900;font-size:36px;text-shadow:0 3px 10px rgba(0,0,0,.6)">أقدم المدن المغربية</div><div id="rk" dir="ltr" style="margin-right:18px;background:#c1272d;padding:0 16px;height:46px;line-height:48px;font-weight:900;font-size:28px;border-radius:6px;display:none"></div>`;
+const tkTxt="أقدم المدن المغربية   ◆   طنجة   ◆   فاس   ◆   مراكش   ◆   الرباط   ◆   شفشاون   ◆   أكادير   ◆   من 500 ق.م إلى اليوم   ◆   ";
+$("#tickertxt").textContent=tkTxt.repeat(4);
+const tr=$("#tr"); const bars=[["#d6303f",160],["#fff",70],["#f6c453",110],["#00a65a",60],["#0a1230",2700]].map(([c,w])=>div(tr,`width:${w}px;background:${c}`));
+bars[4].style.background="linear-gradient(90deg,#0a1230,#16245a 55%,#0a1230)";
+
+/* ===================== background canvas ===================== */
+const bg=$("#bg"),bx=bg.getContext("2d"), fxc=$("#fx"), fx=fxc.getContext("2d");
+const glowGold=(()=>{const c=document.createElement("canvas");c.width=c.height=64;const g=c.getContext("2d"),gr=g.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,"rgba(255,236,170,1)");gr.addColorStop(.25,"rgba(255,200,100,.5)");gr.addColorStop(1,"rgba(255,170,60,0)");g.fillStyle=gr;g.fillRect(0,0,64,64);return c})();
+const glow=(()=>{const c=document.createElement("canvas");c.width=c.height=64;const g=c.getContext("2d"),gr=g.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,"rgba(255,255,255,1)");gr.addColorStop(.25,"rgba(255,255,255,.55)");gr.addColorStop(1,"rgba(255,255,255,0)");g.fillStyle=gr;g.fillRect(0,0,64,64);return c})();
+function accentAt(t){
+  const gold=[246,196,83];
+  let a=gold,b=gold,u=0;
+  for(let i=0;i<CITIES.length;i++){ if(t>=STARTS[i]-0.01&&t<BOUNDS[i+1]){a=CITIES[i].acc;b=a;
+      const prev=i>0?CITIES[i-1].acc:gold; const k=eo3(seg(t,STARTS[i],STARTS[i]+0.6)); return a.map((v,j)=>lerp(prev[j],v,k));}}
+  return gold;
+}
+function drawBG(t){
+  const acc=accentAt(t), W=1920,H=1080;
+  const g=bx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#04060e");g.addColorStop(.55,`rgb(${8+acc[0]*.05|0},${12+acc[1]*.05|0},${30+acc[2]*.08|0})`);g.addColorStop(1,`rgb(${14+acc[0]*.1|0},${18+acc[1]*.08|0},${34+acc[2]*.1|0})`);
+  bx.globalCompositeOperation="source-over";bx.fillStyle=g;bx.fillRect(0,0,W,H);
+  // central radial glow
+  const rg=bx.createRadialGradient(960,470,40,960,470,900);rg.addColorStop(0,`rgba(${acc[0]},${acc[1]},${acc[2]},.30)`);rg.addColorStop(1,"rgba(0,0,0,0)");
+  bx.globalCompositeOperation="lighter";bx.fillStyle=rg;bx.fillRect(0,0,W,H);
+  // volumetric beams
+  for(let k=0;k<7;k++){
+    const ang=(k-3)*0.17+Math.sin(t*.35+k*1.7)*0.10, x0=960+(k-3)*260, wd=70+hash(k)*80;
+    const gb=bx.createLinearGradient(x0,-40,x0+Math.tan(ang)*1200,1100);
+    gb.addColorStop(0,`rgba(${acc[0]},${acc[1]},${acc[2]},${0.16+0.06*Math.sin(t*1.3+k)})`);gb.addColorStop(1,"rgba(0,0,0,0)");
+    bx.fillStyle=gb;bx.beginPath();bx.moveTo(x0-wd*.2,-40);bx.lineTo(x0+wd*.2,-40);bx.lineTo(x0+Math.tan(ang)*1200+wd*2.4,1100);bx.lineTo(x0+Math.tan(ang)*1200-wd*2.4,1100);bx.closePath();bx.fill();
+  }
+  // dot matrix
+  bx.fillStyle="rgba(255,255,255,.07)";
+  const off=(t*14)%60;
+  for(let y=-60;y<H;y+=60)for(let x=-60;x<W;x+=60){bx.fillRect(x+off*.0+((y/60)%2?30:0),y+off,3,3)}
+  // floor grid
+  bx.strokeStyle=`rgba(${acc[0]},${acc[1]},${acc[2]},.18)`;bx.lineWidth=2;bx.beginPath();
+  for(let k=-14;k<=14;k++){bx.moveTo(960+k*60,640);bx.lineTo(960+k*330,1080)}
+  for(let k=0;k<9;k++){const z=((k+(t*.5)%1)/9);const y=640+Math.pow(z,2.2)*440;bx.moveTo(0,y);bx.lineTo(1920,y)}
+  bx.stroke();
+  // particles (embers)
+  for(let i=0;i<110;i++){
+    const sx=hash(i,1)*1920, sp_=20+hash(i,2)*70, ph=hash(i,3)*1300;
+    const y=1100-((t*sp_+ph)%1300), x=sx+Math.sin(t*.5+i)*34, r=2+hash(i,4)*6, a=(0.25+0.6*hash(i,5))*(0.5+0.5*Math.sin(t*2+i));
+    bx.globalAlpha=a*0.8;bx.drawImage(glowGold,x-r*3,y-r*3,r*6,r*6);
+  }
+  bx.globalAlpha=1;
+  // bokeh
+  for(let i=0;i<9;i++){const x=hash(i,9)*1920+Math.sin(t*.2+i)*60,y=hash(i,10)*900+Math.cos(t*.17+i)*40,r=60+hash(i,11)*120;bx.globalAlpha=.05+.04*hash(i,12);bx.drawImage(glow,x-r,y-r,r*2,r*2)}
+  bx.globalAlpha=1;
+  // vignette
+  bx.globalCompositeOperation="source-over";
+  const vg=bx.createRadialGradient(960,540,520,960,540,1200);vg.addColorStop(0,"rgba(0,0,0,0)");vg.addColorStop(1,"rgba(0,0,0,.62)");bx.fillStyle=vg;bx.fillRect(0,0,W,H);
+}
+/* foreground FX: speed lines, flares, sparks */
+const EVENTS=[]; // {t, x, y, kind}
+function buildEvents(){
+  CITIES.forEach((c,i)=>{const B=STARTS[i];
+    EVENTS.push({t:B+0.45,x:S[i].cxT,y:250,k:"name",s:1});
+    EVENTS.push({t:B+3.4,x:S[i].cxT,y:660,k:"num",s:1.3});});
+  EVENTS.push({t:0.7,x:960,y:250,k:"name",s:1.2},{t:1.05,x:960,y:430,k:"name",s:1.4},{t:T_OUT+0.5,x:960,y:200,k:"name",s:1.4});
+}
+function drawFX(t){
+  fx.clearRect(0,0,1920,1080);
+  fx.globalCompositeOperation="lighter";
+  // transition speed lines
+  for(const B of BOUNDS){const d=t-B;if(d>-0.45&&d<0.45){const u=(d+0.45)/0.9;
+    for(let i=0;i<70;i++){const y=hash(i,B)*1080,len=300+hash(i,3)*900,x=1920+400-eio(u)*(4200)+hash(i,5)*500-250;
+      fx.fillStyle=`rgba(255,${230+hash(i,7)*25|0},${190+hash(i,8)*60|0},${0.45*Math.sin(Math.PI*u)})`;fx.fillRect(x,y,len,2+hash(i,6)*3)}}}
+  // impact flares + sparks
+  for(const e of EVENTS){const d=t-e.t;if(d<0||d>1.1)continue;
+    const a=Math.exp(-d*5)*e.s; const r=260+d*900*e.s;
+    fx.globalAlpha=Math.min(1,a*0.9);fx.drawImage(glow,e.x-r,e.y-r*0.6,r*2,r*1.2);
+    fx.globalAlpha=1;
+    // shock ring
+    fx.strokeStyle=`rgba(255,226,150,${Math.max(0,.8-d*1.0)})`;fx.lineWidth=6*(1-d)+1;fx.beginPath();fx.ellipse(e.x,e.y,60+d*620*e.s,(60+d*620*e.s)*0.42,0,0,Math.PI*2);fx.stroke();
+    // sparks
+    for(let i=0;i<34;i++){const ang=hash(i,e.t)*Math.PI*2,spd=200+hash(i,3)*700*e.s,px=e.x+Math.cos(ang)*spd*d,py=e.y+Math.sin(ang)*spd*d*0.8+300*d*d;
+      const rr=3+hash(i,4)*6;fx.globalAlpha=Math.max(0,1-d/1.0)*0.9;fx.drawImage(glow,px-rr*3,py-rr*3,rr*6,rr*6)}
+    fx.globalAlpha=1;
+  }
+  fx.globalCompositeOperation="source-over";
+}
+/* ===================== main frame function ===================== */
+function punch(t){ // camera shake from impacts
+  let sx=0,sy=0,sc=0;
+  for(const B of BOUNDS){const d=t-B;if(d>0&&d<0.6){const a=Math.exp(-d*9);sx+=Math.sin(d*70)*16*a;sy+=Math.cos(d*83)*12*a;sc+=0.035*a}}
+  for(const e of EVENTS){const d=t-e.t;if(d>0&&d<0.5){const a=Math.exp(-d*10)*e.s;sx+=Math.sin(d*90)*7*a;sy+=Math.cos(d*77)*9*a;sc+=0.018*a}}
+  return [sx,sy,sc];
+}
+function show(e,v,d="block"){e.style.display=v?d:"none"}
+let built=false;
+function renderFrame(t){
+  if(!built){buildEvents();built=true}
+  drawBG(t);drawFX(t);
+  const [px,py,ps]=punch(t);
+  // slow global dolly + shake
+  const gl=1+0.012*Math.sin(t*0.4);
+  $("#cam").style.transform=`translate(${px}px,${py}px) scale(${gl+ps})`;
+  // ---------- intro ----------
+  show(intro,t<T_INTRO);
+  if(t<T_INTRO){
+    const e=t;
+    const push=eio(seg(t,5.3,5.95));
+    intro.style.transform=`scale(${1+push*0.9})`;intro.style.opacity=1-eo3(seg(t,5.7,6.0));
+    I.star.style.opacity=clamp(e*3);I.star.style.transform=`translateY(${(1-sp(e-0.2,2.2,.6))*-200}px)`;I.starIn.style.transform=`rotateY(${e*220}deg)`;
+    const s1=sp(e-0.7,2.2,.55),s2=sp(e-1.05,2.2,.55);
+    I.l1.style.opacity=clamp((e-0.7)*18);I.l1.style.transform=`scale(${lerp(2.6,1,s1)}) translateY(${(1-s1)*-60}px)`;
+    I.l2.style.opacity=clamp((e-1.05)*18);I.l2.style.transform=`scale(${lerp(2.6,1,s2)}) translateY(${(1-s2)*-60}px)`;
+    I.rule.style.transform=`scaleX(${eo5(seg(e,1.5,2.3))})`;
+    const b=sp(e-2.1,2.0,.8);I.bar.style.opacity=clamp((e-2.1)*10);I.bar.style.transform=`skewX(-10deg) scaleX(${b})`;
+    I.barT.style.opacity=eo3(seg(e,2.45,2.8));
+    I.cards.forEach((d,k)=>{const s=sp(e-(3.2+k*0.17),2.2,.62);d.style.opacity=clamp((e-(3.2+k*0.17))*12);d.style.transform=`skewX(-10deg) translateY(${(1-s)*160}px) scale(${lerp(.6,1,s)})`});
+  }
+  // ---------- cities ----------
+  let cur=-1;
+  S.forEach((o,i)=>{
+    const B=STARTS[i], vis=t>=B&&t<BOUNDS[i+1];
+    show(o.root,vis);if(!vis)return;cur=i;
+    const lt=t-B, D=DURS[i], sd=o.P==="R"?1:-1;
+    const q=Math.floor(t*12), jx=(hash(i,q)-.5)*1.6, jy=(hash(i,q+7)-.5)*1.6;
+    // giant rank
+    const rk=sp(lt-0.05,1.6,.7);
+    o.rank.style.opacity=clamp(lt*4);o.rank.style.transform=`translate(${(1-rk)*-sd*500+Math.sin(t*.5)*14}px,${Math.cos(t*.4)*8}px) scale(${lerp(1.5,1,rk)})`;
+    // panels
+    const pr=sp(lt-0.12,1.9,.62), pm=sp(lt-0.2,1.9,.58), pgn=sp(lt-0.3,1.9,.62);
+    o.pr.style.transform=`translate(${-34+(1-pr)*sd*-1100}px,28px) skewX(-10deg)`;
+    o.pm.style.transform=`translate(${(1-pm)*sd*-1200}px,0) skewX(-10deg)`;
+    o.pgn.style.transform=`translate(${26+(1-pgn)*sd*-1300}px,-24px) skewX(-10deg)`;
+    const tilt=Math.sin(t*.5+i)*3.5;
+    o.pg.style.transform=`rotateY(${(sd)*-5+tilt}deg) rotateX(${2+Math.cos(t*.4)*1.5}deg) translate(${jx}px,${jy}px)`;
+    o.br.forEach((b,k)=>{const bb=eo5(seg(lt,0.65+k*0.05,1.0+k*0.05));b.style.opacity=bb;b.style.transform=`scale(${lerp(2,1,bb)})`});
+    // Ken-Burns + parallax
+    const kb=1.0+0.16*seg(lt,0,D);o.kb.style.transform=`scale(${kb}) translate(${Math.sin(t*.3+i)*10-lt*sd*-9}px,${-lt*3}px)`;
+    // shine sweeps
+    const sh=((t*0.55+i*.3)%1.8)/1.8;o.shine.style.left=(-300+sh*1700)+"px";o.shine.style.opacity=(lt>0.8)?0.85:0;
+    // name slam
+    const n=sp(lt-0.38,2.3,.5);
+    o.name.style.opacity=clamp((lt-0.38)*20);o.name.style.transform=`scale(${lerp(2.2,1,n)}) translateY(${(1-n)*-90}px) rotate(${(1-n)*sd*-3}deg)`;
+    // tag bar
+    const tb=sp(lt-0.7,2.0,.75);o.tagbar.style.opacity=clamp((lt-0.7)*10);o.tagbar.style.transform=`skewX(-10deg) scaleX(${tb})`;
+    o.tagt.style.opacity=eo3(seg(lt,0.95,1.25));
+    // stat card
+    const cd=sp(lt-1.1,2.0,.7);o.card.style.opacity=clamp((lt-1.1)*8);o.card.style.transform=`skewX(-6deg) translateY(${(1-cd)*180}px)`;
+    const cnt=eio(seg(lt,1.9,3.4)), val=Math.round(o.c.num*cnt);
+    const txt=val.toLocaleString("en-US");o.num.textContent=txt;o.numx.textContent=txt;
+    const done=lt>=3.4, hit=sp(lt-3.4,3.0,.45);
+    o.num.style.transform=o.numx.style.transform=done?`scale(${1+0.12*(1-hit)*Math.exp(-(lt-3.4)*3)+0})`:`scale(1)`;
+    o.num.style.filter=cnt<1?`blur(${(1-cnt)*1.5}px)`:"none";
+    o.unit.style.opacity=eo3(seg(lt,3.35,3.6));o.unit.style.transform=`translateY(${(1-eo3(seg(lt,3.35,3.7)))*30}px)`;
+    o.shim.style.left=(-200+eo3(seg(lt,3.4,4.3))*1000)+"px";o.shim.style.opacity=(lt>3.4&&lt<4.4)?1:0;
+    const nt=sp(lt-3.75,2.2,.7);o.noteBox.style.opacity=clamp((lt-3.75)*9);o.noteBox.style.transform=`translateY(${(1-nt)*40}px)`;
+    // whip-out in the last 0.4 s (covered by the shard wipe)
+    const xo=eio(seg(lt,D-0.42,D));
+    o.root.style.transform=`translateX(${-xo*700}px)`;
+    o.root.style.filter=xo>0?"url(#hb)":"none";
+    if(xo>0)$("#hbd").setAttribute("stdDeviation",(xo*46).toFixed(1)+" 0");
+  });
+  // ---------- outro ----------
+  const lo=t-T_OUT; show(outro,lo>=0);
+  if(lo>=0){
+    const a=sp(lo-0.3,2.0,.55);O.thx.style.opacity=clamp((lo-0.3)*14);O.thx.style.transform=`scale(${lerp(2.4,1,a)}) translateY(${(1-a)*-80}px)`;
+    O.rule.style.transform=`scaleX(${eo5(seg(lo,0.9,1.6))})`;
+    const c=sp(lo-1.1,2.0,.7);O.ch.style.opacity=O.cht.style.opacity=clamp((lo-1.1)*10);O.ch.style.transform=`skewX(-10deg) translateY(${(1-c)*120}px)`;O.cht.style.transform=`translateY(${(1-c)*120}px)`;
+    const b=sp(lo-1.7,2.4,.45), pulse=1+0.04*Math.sin((lo-2.2)*6)*(lo>2.2?1:0);O.btn.style.opacity=clamp((lo-1.7)*10);O.btn.style.transform=`scale(${lerp(.3,1,b)*pulse})`;
+    O.dots.forEach((d,k)=>{const s=sp(lo-(2.3+k*0.1),2.2,.7);d.style.opacity=clamp((lo-(2.3+k*0.1))*10);d.style.transform=`translateY(${(1-s)*60}px)`});
+    outro.style.transform=`scale(${1+0.015*lo})`;
+  }
+  // ---------- timeline + chyron + ticker ----------
+  const tlv=eo3(seg(t,STARTS[0]+0.8,STARTS[0]+1.4))*(1-eo3(seg(t,T_OUT-0.1,T_OUT+0.4)));
+  tl.style.opacity=tlv;
+  tlM.forEach((m,k)=>{const reached=cur>=k||t>=T_OUT;const s=reached?sp(t-(STARTS[k]+0.9),2.4,.55):0;
+    m.m.style.opacity=reached?Math.min(1,s*4):0;m.m.style.transform=`translateY(${(1-s)*-90}px) scale(${cur===k?1.35+0.12*Math.sin(t*6):1})`;
+    m.lab.style.opacity=(cur===k)?eo3(seg(t,STARTS[k]+1.0,STARTS[k]+1.4)):0});
+  const rk=$("#rk");if(cur>=0){rk.style.display="block";rk.textContent=(cur+1)+" / 6"}else rk.style.display="none";
+  $("#chy").style.opacity=eo3(seg(t,0.6,1.0));
+  $("#flagbug").style.opacity=eo3(seg(t,0.6,1.0));
+  $("#ticker").style.transform=`translateY(${(1-eo3(seg(t,0.4,1.0)))*70}px)`;
+  const tw=$("#tickertxt");tw.style.right=(-(t*170)%1600)+"px";
+  // ---------- shard wipe + flash ----------
+  let u=-1;for(const B of BOUNDS){const x=(t-(B-0.42))/0.84;if(x>=0&&x<=1){u=x;break}}
+  show(tr,u>=0);
+  if(u>=0){
+    const cfg=[[0,160],[0.05,70],[0.09,110],[0.13,60],[0.17,2700]];
+    bars.forEach((b,k)=>{const [d,w]=cfg[k];const q=eio(seg(u,d,d+0.7));const L=2300-q*(2300+w+2900);b.style.left=L+"px"});
+    const fl=Math.max(0,1-Math.abs(u-0.52)/0.07);$("#flash").style.opacity=fl*0.55;
+  } else $("#flash").style.opacity=0;
+}
+window.renderFrame=renderFrame;window.T_END=T_END;window.BOUNDS=BOUNDS;window.STARTS=STARTS;window.T_OUT=T_OUT;
+renderFrame(0);
+</script>
+</body>
+</html>
