@@ -119,3 +119,15 @@ Each cluster has one pillar page and 8–15 children, all linked both ways, plus
 - [ ] Search Console sitemap submission: `https://crochetpatternsco.com/sitemap_index.xml`.
 - [ ] Metricool scheduling to Pinterest/Facebook.
 - [ ] Confirm the contact email.
+
+## 11. Progress log
+
+### 2026-10-08: draft theme `crochet-patterns-co-wpvibe-draft` (NOT published yet)
+- New files: `inc/pattern-extra.php`, `assets/pattern-extra.css`. Edited: `functions.php` (v3.2.0), `inc/core.php` (new meta fields), `inc/pattern.php`, `inc/seo.php` (author = designer Person).
+- New pattern fields: `cpco_materials`, `cpco_steps` (Title | text | photo ID), `cpco_tips`, `cpco_guides` (Title | URL), `cpco_maker`, `cpco_maker_bio`, `cpco_tested`.
+- New page blocks: jump links + print button, "Pattern at a glance" tiles, materials, photo steps, tips, technique guides, maker box. Empty fields render nothing.
+- Demo post ID 20: renamed to "Teddy Bear Amigurumi Crochet Pattern with Sweater and Snood", slug `teddy-bear-amigurumi-crochet-pattern`, Rank Math title/description/focus keywords set, new fields filled. It was found PUBLISHED and was set back to DRAFT.
+- Not yet verified visually: materials, steps, tips and maker blocks (draft posts cannot be fetched by Claude; the owner must open the preview link while logged in).
+- Gotcha: new meta keys are only registered by the draft theme, so REST writes to them are ignored until the theme is published. Use WP-CLI `post meta update <id> <key> <value>` before publishing.
+- Gotcha: the demo PDF (Teddy Bear by Pupyreva Ksenia) states "Mailing, posting or sharing this pattern on the Internet is strictly prohibited". The designer's photos were NOT uploaded; steps use placeholder tiles. This pattern cannot be offered for download. Screen every real PDF for such clauses before import.
+- WPVibe quota is nearly used up (about 300 calls per 24h). Hostinger returns 429 on bursts: space writes out.
