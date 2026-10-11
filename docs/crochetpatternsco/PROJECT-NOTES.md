@@ -160,3 +160,20 @@ Each cluster has one pillar page and 8–15 children, all linked both ways, plus
 - Fixed: the admin user display name was the owner's email address and showed publicly in post bylines; changed to "Crochet Patterns Co" (slug `crochet-patterns-co`).
 - Sitemap index now lists post, page and category sitemaps (pattern sitemaps return when real patterns are published). Owner submitted the sitemap to Search Console.
 - Open: Cloudflare AI-bot blocking (owner), domain-name similarity question (`crochetpatternco.com` reported by owner; check niche, activity and trademarks before deciding to rename), real patterns with photos and PDFs, Elara post still draft (ID 22), demo post ID 20 still draft (to delete).
+
+### 2026-10-11: 10 scheduled guides (category Guides, ID 15), each with Rank Math title, description, focus keywords
+| ID | Go-live (09:00) | Slug | Supports |
+|---|---|---|---|
+| 31 | 13 Oct | /crochet-christmas-ornaments-guide/ | seasonal-decor |
+| 32 | 15 Oct | /amigurumi-for-beginners/ | toys-plushies |
+| 33 | 17 Oct | /how-to-join-granny-squares/ | granny-squares |
+| 34 | 20 Oct | /crochet-baby-toys-safety-guide/ | baby-kids |
+| 35 | 22 Oct | /best-yarn-for-crochet-blankets-cushions/ | home-living |
+| 36 | 24 Oct | /crochet-hat-size-chart/ | accessories |
+| 37 | 27 Oct | /yarn-and-gauge-for-crochet-clothing/ | clothing |
+| 38 | 29 Oct | /beginner-crochet-stitches/ | level/beginner |
+| 39 | 31 Oct | /how-to-read-crochet-charts/ | trends |
+| 40 | 3 Nov | /how-to-find-good-free-crochet-patterns/ | new |
+- Internal links only go backward to guides that are already live on the publish date (plus the 4 existing guides, category hubs, /patterns/ and level pages). The "Keep reading" row adds forward links automatically. TODO after 3 Nov: add forward links from the older guides.
+- Facts checked by web search: CPSC small-parts rule (baby safety), stiffening mixes (ornaments), CYC symbols (charts). Head sizes and blanket sizes are NOT from an official table (sources disagree), so the text calls them typical ranges.
+- TODO after each goes live: open the URL, check one H1, table styling, links, sitemap entry; owner requests indexing in Search Console. Make a Pinterest chart pin from the hook, yarn and hat charts.
