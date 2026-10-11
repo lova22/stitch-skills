@@ -153,3 +153,10 @@ Each cluster has one pillar page and 8–15 children, all linked both ways, plus
 - DONE (drafts, publish with theme): 4 guides, all in Guides category with Rank Math title, description and focus keywords: 23 crochet-abbreviations-us-uk-terms, 24 crochet-hook-size-chart, 25 crochet-yarn-weight-chart, 26 how-to-read-a-crochet-pattern.
 - DRAFT THEME v3.3.0 also adds: table styling for guides, automatic "Helpful crochet guides" block on every pattern page (latest 4 Guides), "Free crochet patterns to try" row on guide pages, always-visible download button.
 - NEXT: owner approves publish (after backup) -> publish theme, publish 4 guides, verify, submit sitemap in Search Console and Bing, fix Cloudflare AI setting, add real patterns with own photos, Pinterest.
+
+### 2026-10-11 (later): PUBLISHED
+- Theme v3.3.0 is LIVE (backup of the previous theme: `crochet-patterns-co-wpvibe-backup`; owner confirmed a site backup). Category pages now at `/free-crochet-patterns/{slug}/` (verified live).
+- 4 guides published: /crochet-abbreviations-us-uk-terms/, /crochet-hook-size-chart/, /crochet-yarn-weight-chart/, /how-to-read-a-crochet-pattern/ (category Guides, ID 15).
+- Fixed: the admin user display name was the owner's email address and showed publicly in post bylines; changed to "Crochet Patterns Co" (slug `crochet-patterns-co`).
+- Sitemap index now lists post, page and category sitemaps (pattern sitemaps return when real patterns are published). Owner submitted the sitemap to Search Console.
+- Open: Cloudflare AI-bot blocking (owner), domain-name similarity question (`crochetpatternco.com` reported by owner; check niche, activity and trademarks before deciding to rename), real patterns with photos and PDFs, Elara post still draft (ID 22), demo post ID 20 still draft (to delete).
