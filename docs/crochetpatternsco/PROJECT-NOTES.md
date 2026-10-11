@@ -131,3 +131,5 @@ Each cluster has one pillar page and 8–15 children, all linked both ways, plus
 - Gotcha: new meta keys are only registered by the draft theme, so REST writes to them are ignored until the theme is published. Use WP-CLI `post meta update <id> <key> <value>` before publishing.
 - Gotcha: the demo PDF (Teddy Bear by Pupyreva Ksenia) states "Mailing, posting or sharing this pattern on the Internet is strictly prohibited". The designer's photos were NOT uploaded; steps use placeholder tiles. This pattern cannot be offered for download. Screen every real PDF for such clauses before import.
 - WPVibe quota is nearly used up (about 300 calls per 24h). Hostinger returns 429 on bursts: space writes out.
+
+- Reusable design system for cloning this structure to another site: `docs/crochetpatternsco/DESIGN-SYSTEM.md`.
