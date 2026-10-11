@@ -133,3 +133,9 @@ Each cluster has one pillar page and 8–15 children, all linked both ways, plus
 - WPVibe quota is nearly used up (about 300 calls per 24h). Hostinger returns 429 on bursts: space writes out.
 
 - Reusable design system for cloning this structure to another site: `docs/crochetpatternsco/DESIGN-SYSTEM.md`.
+
+### 2026-10-11: pattern post ID 22 (draft): Elara Doll and Chip the Soldier
+- Slug `elara-doll-and-chip-soldier-crochet-pattern`; category Toys & Plushies; level Advanced (editorial judgement, change if needed); US terms.
+- Rank Math: title "Crochet Doll Pattern: Elara and Chip the Soldier (Free)"; description 146 chars; focus keywords: crochet doll pattern, elara doll crochet pattern, crochet soldier doll pattern.
+- Full written pattern kept word for word in the post body (H2 per doll, H3 per part). Materials, parts overview and tips are in the structured fields. No PDF yet (`cpco_pdf_url` empty), no photo (motif placeholder), no designer (`cpco_maker` empty), no time estimate.
+- Open: confirm rights to the text, add real photos, upload PDF to R2, name the designer, check stitch counts (Chip hat row 15 adds up to 36, not the stated 40), create tags if wanted.
