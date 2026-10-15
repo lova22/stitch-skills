@@ -82,3 +82,22 @@ Add these words once or twice in the intro, a heading or the FAQ of the matching
 ### Decisions
 - Keep US spelling and US stitch terms as the main version; keep the "US vs UK terms" guide as the bridge, and mention UK terms in each pattern's FAQ.
 - Next exports: DE, FR and ES with the same seed (check whether Europeans search in English or their language); then the guide seeds and competitor Organic Research listed above.
+
+## Update 2026-10-15: Europe (Spain, France, Germany; seed "crochet patterns")
+Brand and navigational keywords removed (hobbii, drops, ravelry, etc.).
+| Country | Keywords | Local-language searches (summed, many near-duplicates) | English searches |
+|---|---|---|---|
+| France | 539 | 84,920 ("modèle crochet facile gratuit" 2,400; "modèle crochet gratuit à télécharger" 2,400; "patron crochet gratuit" 2,400; "patron de crochet gratuit pdf débutant" 2,400; KD about 25) | 43,710 |
+| Spain | 282 | 38,760 ("ganchillo" 8,100; "patrones gratis" 1,600; "patrones crochet" 1,000) | 17,060 |
+| Germany | 263 | almost none (the seed was English, so German words such as "häkelanleitung" were not returned) | 35,890 |
+Findings:
+- Europeans already search English words: "crochet patterns for beginners" is 6,600 in Spain, 5,400 in France and 4,400 in Germany (KD 25 to 31). English pages reach them without translation.
+- France has the strongest local-language demand in this export, but Spanish is probably bigger overall: the Spain database excludes Latin America, and the US export showed "ganchillo patterns" at 33,100. German demand is unknown until it is searched with a German seed.
+- Translation is a later step (after the English library exists). Candidate order: Spanish, French, then German. Translate the top 5 patterns and the beginner hub, translate the PDF too, use real translated pages in a sub-folder (/es/, /fr/) and add hreflang only for those. Do not machine-translate 1,000 patterns.
+
+## Competitors (from the Semrush "pages" export for "crochet patterns for beginners": 1,540 keywords, 750 domains)
+Domains that rank most often (keywords where they appear in the top results):
+- Not realistic targets (platforms and yarn brands): youtube.com 1,175, pinterest.com 950, facebook.com 461, lovecrafts.com 761, yarnspirations.com 646, lionbrand.com 269, etsy.com 185, amazon.com 101, premieryarns.com 133, ribblr 166.
+- Independent crochet sites to study (realistic benchmarks): daisyfarmcrafts.com 258, makeanddocrew.com 192, mamainastitch.com 168, hicrochet.com 163, crochet365knittoo.com 158, easycrochet.com 149, sarahmaker.com 144, okiegirlblingnthings.com 138, amigurumi.com 115, theloopylamb.com 101, daisycottagedesigns.net 98, marymaxim.com 87, crochetwithgabriellarose.com 67, sigonimacaroni.com 62.
+- Lesson: video (YouTube) and Pinterest take a large share of the results, so the plan needs short how-to videos or pin-ready step images and Pinterest posting, not only pages.
+Next competitor step: run Organic Research on 5 of the independent sites (daisyfarmcrafts, makeanddocrew, mamainastitch, hicrochet, easycrochet) and export their top pages.
