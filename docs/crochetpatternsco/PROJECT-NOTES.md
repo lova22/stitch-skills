@@ -217,3 +217,8 @@ Each cluster has one pillar page and 8–15 children, all linked both ways, plus
 - Plan saved in `SEO-RESEARCH-PLAN.md`: claude-seo on the owner's laptop for the technical/schema/GEO audit, Semrush CSV exports (US, CA, AU, UK, DE, FR, ES) for keywords and competitors, Search Console CSVs for tracking. Skipped rankme.fast (Docker plus paid DataForSEO), SEO-Image-Toolkit (Etsy tool, proprietary licence) and AnswerThePublic (Semrush covers it).
 - This cloud session cannot reach crochetpatternsco.com, Semrush or AnswerThePublic; it reads the site through WPVibe only.
 - Waiting for: Semrush exports and claude-seo audit reports from the owner.
+
+### 2026-10-15: US Semrush data analysed
+- Two exports (16,963 keywords, volume 50+; and KD 49 or lower, 16,701 keywords). Result in `SEO-KEYWORD-PLAN.md`: clusters, quick fixes, publishing order for the PDF library, 12-week plan.
+- Finding: "baby bunny amigurumi crochet pattern" and "baby koala ..." have no measurable volume; real searches are "crochet bunny pattern" (2,400, KD 12), "bunny crochet pattern" 2,900, "koala crochet pattern" 320. Proposed retarget of focus keywords/titles for posts 41, 42 and 26 (not applied yet, waiting for owner OK).
+- Biggest keyword: "crochet patterns for beginners" 135,000 (KD 29) for `/level/beginner/`.
