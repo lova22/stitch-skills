@@ -101,3 +101,25 @@ Domains that rank most often (keywords where they appear in the top results):
 - Independent crochet sites to study (realistic benchmarks): daisyfarmcrafts.com 258, makeanddocrew.com 192, mamainastitch.com 168, hicrochet.com 163, crochet365knittoo.com 158, easycrochet.com 149, sarahmaker.com 144, okiegirlblingnthings.com 138, amigurumi.com 115, theloopylamb.com 101, daisycottagedesigns.net 98, marymaxim.com 87, crochetwithgabriellarose.com 67, sigonimacaroni.com 62.
 - Lesson: video (YouTube) and Pinterest take a large share of the results, so the plan needs short how-to videos or pin-ready step images and Pinterest posting, not only pages.
 Next competitor step: run Organic Research on 5 of the independent sites (daisyfarmcrafts, makeanddocrew, mamainastitch, hicrochet, easycrochet) and export their top pages.
+
+## Competitor reports, batch 1 (Semrush Domain Overview and Organic Research PDFs, 2026-10-15, US database)
+| Site | Organic visits a month | Keywords | Backlinks | Referring domains | Trend |
+|---|---|---|---|---|---|
+| mamainastitch.com | 67.7K | 35.7K | 55.9K | about 4K | visits -7%, keywords +24% |
+| daisyfarmcrafts.com | 53.1K | 47.3K | 13.8K | about 2K | visits +6%, keywords +56% |
+| makeanddocrew.com | 21.2K | 22.5K | 32.4K | about 4K | visits -5%, keywords -4% |
+(daisyfarmcrafts' Domain Overview PDF was exported for the French database; its backlink figures are global.)
+
+What they show:
+- **Traffic comes from a few evergreen pages.** daisyfarmcrafts: its #1 keyword "crochet newborn blanket patterns" (22,200 searches, position 1) is 10.4% of its traffic, and its top page (a baby blanket) is 12.5%; others are an easy beanie page (606 keywords), "42 free basic crochet stitches", and beginner scarves. makeanddocrew: home page 10.4%, a hexagon sweater pattern 5.3%, "easy free crochet sweater patterns" 4.9%, "crochet borders" 4.3%. mamainastitch: blanket and stitch tutorials ("crochet blanket", "how to crochet a blanket", "moss stitch crochet").
+- **Country split of their keywords:** US about 52 to 54%, UK 9 to 10%, Australia about 10%, Canada 8 to 9%, mobile-US about 5%. This matches our plan: the four English markets are about 80% of demand.
+- **English works in Europe:** daisyfarmcrafts ranks #9 in France for "crochet patterns for beginners" (5,400 searches there) and that single keyword is 18.9% of its French traffic.
+- **They are old and big:** thousands of referring domains and 13K to 56K backlinks. Our site has almost none, so links are the main gap, not only content.
+- **Traffic is flat or falling** for two of the three, so the niche is mature; the one growing site (daisyfarmcrafts) is adding keywords through many long-tail pattern pages.
+
+What we do with it:
+1. Build pillar pages first, matching the winners: newborn/baby blanket patterns hub, free sweater and cardigan patterns, hat/beanie patterns, a crochet stitches library ("free basic crochet stitches" style), plus the beginner hub. Fill each with real patterns from the PDF library plus a roundup page that links to them.
+2. Target positions 1 to 3 on long-tail pattern keywords (KD under 30), not head terms such as "crochet".
+3. Start a link plan (Pinterest and Reddit sharing, craft resource lists, free charts others link to, partner blogs). Backlink Gap export in the next round.
+4. Expect a slow start: these sites took years. A realistic first-year goal is hundreds to low thousands of visits a month; no ranking guarantee.
+Batch 2 (hicrochet, easycrochet, crochet365knittoo, sarahmaker) comes next.
