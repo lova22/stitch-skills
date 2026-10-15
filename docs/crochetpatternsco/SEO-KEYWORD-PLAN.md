@@ -56,3 +56,29 @@ Publish only patterns you have the rights to. Use the searched wording in the ti
 - Guide seeds: crochet hook size chart, crochet yarn weight chart, crochet abbreviations, crochet gauge, crochet stitches, amigurumi for beginners, how to join granny squares.
 - Organic Research for the competitor sites; Keyword Gap against 3 of them.
 - Re-export weekly from Search Console.
+
+## Update 2026-10-15: UK, Canada and Australia (same seed "crochet patterns", volume 50 or more)
+Files: UK 4,699 keywords (the KD 49 or lower export only), CA 2,826, AU 2,279. After removing noise ("near me", unrelated brands, Spanish words) the relevant keywords and their combined monthly searches are: US 16,830 (4.08 million), UK 4,579 (0.83 million), CA 2,745 (0.42 million), AU 2,242 (0.32 million). The three extra English markets add roughly 38% on top of the US.
+
+### What is the same everywhere
+The ranking is the same as in the US: beginner, blankets (especially newborn blankets), cardigans, bags, hats/beanies, flowers and granny squares, then amigurumi and Christmas. So one English page can serve all four countries; separate country pages would not help.
+- "crochet patterns for beginners": US 135,000, UK 33,100, CA 9,900, AU 5,400 (KD 24 to 33).
+- "crochet patterns": US 49,500, UK 9,900, CA 6,600, AU 3,600.
+- "free crochet patterns": US 22,200, UK 5,400, CA 2,400, AU 1,600.
+- Newborn blanket: UK "newborn crochet blanket pattern" 2,900 and "crochet newborn blanket pattern" 2,400, CA 1,600, AU 1,300 (US 22,200 for "crochet newborn blanket patterns").
+
+### Local wording to use inside the text (not new pages)
+| Meaning | US | Also used |
+|---|---|---|
+| Sweater | sweater, cardigan | UK/AU "jumper" (UK "crochet jumper pattern" 1,300, KD 12; AU 590, KD 13), "jersey" (UK 1,300, CA 1,000) |
+| Hat | hat, beanie | CA "toque" (1,000), AU "beanie cap" (1,000, KD 15) |
+| Christmas | christmas | UK "xmas" (1,600, KD 18) |
+| Bag | bag, purse | UK "purse bag" (1,600), AU "purse bag" (720) |
+| Easy | easy | UK/AU "simple" (1,300 UK) |
+| Dishcloth | dishcloth | CA "dish cloth" (1,000) |
+| Animals | crochet animal patterns | CA "crochet animals" 1,600; AU "amigurumi" 2,900 (KD 37) |
+Add these words once or twice in the intro, a heading or the FAQ of the matching pages, for example "crochet cardigan or jumper pattern" and "beanie (toque) pattern".
+
+### Decisions
+- Keep US spelling and US stitch terms as the main version; keep the "US vs UK terms" guide as the bridge, and mention UK terms in each pattern's FAQ.
+- Next exports: DE, FR and ES with the same seed (check whether Europeans search in English or their language); then the guide seeds and competitor Organic Research listed above.
