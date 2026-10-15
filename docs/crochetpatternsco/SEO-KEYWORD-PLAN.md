@@ -123,3 +123,32 @@ What we do with it:
 3. Start a link plan (Pinterest and Reddit sharing, craft resource lists, free charts others link to, partner blogs). Backlink Gap export in the next round.
 4. Expect a slow start: these sites took years. A realistic first-year goal is hundreds to low thousands of visits a month; no ranking guarantee.
 Batch 2 (hicrochet, easycrochet, crochet365knittoo, sarahmaker) comes next.
+
+## Competitor reports, batch 2 (easycrochet.com, hicrochet.com, mamainastitch positions)
+| Site | Organic visits a month | Keywords | Backlinks | Referring domains |
+|---|---|---|---|---|
+| easycrochet.com | 40.5K (flat) | 30.0K (-8%) | 43.1K | about 5K |
+| hicrochet.com | 235 (+85%) | 333 (+301%) | 2.7K | about 1K |
+Findings:
+- **easycrochet.com is a hub site, the closest model to ours.** Its "all free crochet patterns" index page alone is 26.4% of its traffic (786 keywords) and the home page 12.6%. It ranks #1 for "crochet ideas" (14,800), #2 for "free crochet patterns" (22,200), #1 for "free crochet patterns for beginners" (4,400), #3 for "crochet patterns" (49,500). Other strong pages: a free "multiples calculator" tool (3.5% of traffic, 2,386 keywords), an amigurumi category page (3.3%) and a hat patterns page (2.8%). Lesson: our `/patterns/` archive, category hubs and a small free tool can be the main traffic pages.
+- **hicrochet.com is the realistic early benchmark.** A small, young site with about 1K referring domains still gets only 235 visits a month. Its wins are narrow long-tail pages: "easy crochet animals" position 4 (1,300 searches, 13% of its traffic), "shrugs crochet patterns free" position 1 (110), "crochet mini skirt pattern" position 3 (320), "crochet shrug pattern" position 7 (2,400). Expect slow, narrow gains first.
+- **mamainastitch.com** wins with blanket and stitch tutorials: "crochet blanket" #2 (14,800), "how to crochet a blanket" #2 (6,600), "moss stitch crochet" (12,100, position 1 on related variants), "waffle stitch crochet" #2 (5,400), plus "crochet washcloth" #1 (2,400). Stitch tutorials are a second traffic source next to patterns.
+
+## First 30 targets (US volume per month; build in this order)
+Hubs and pillar pages (get intro text, internal links and a roundup of real patterns):
+1. Home: "free crochet patterns" 22,200 (KD 40)
+2. `/patterns/` archive: "free crochet patterns pdf" 2,900 and "all free crochet patterns" style listing (competitor model)
+3. `/level/beginner/`: "crochet patterns for beginners" 135,000 (KD 29)
+4. Baby & Kids hub plus roundup: "crochet newborn blanket patterns" 22,200 (KD 24), "baby crochet patterns" 1,600
+5. Home & Living hub: "crochet blanket pattern" 14,800 (KD 25)
+6. Accessories hub: "crochet hat pattern" 6,600 (KD 20), "crochet beanie pattern free" 5,400
+7. Clothing hub: "crochet cardigan pattern" 8,100 (KD 17), "crochet sweater pattern" 5,400 (KD 10)
+8. Granny Squares hub: "granny square crochet pattern" 5,400 (KD 20), "crochet flower pattern" 6,600
+9. Toys & Plushies hub: "amigurumi patterns" 4,400 (KD 29), "crochet animal patterns" 2,900 (KD 17)
+10. Seasonal hub: "christmas crochet patterns" 2,400 (KD 18), "christmas tree ornaments crochet pattern" 1,900 (KD 6)
+11. Stitch library guide ("free basic crochet stitches"): "crochet stitches" 18,100, "moss stitch crochet" 12,100, "waffle stitch crochet" 5,400
+12. Small free tool (stitch multiples calculator or hook size converter): competitor evidence says tools earn traffic and links
+
+Pattern pages as the PDFs go live (one per keyword, wording as searched):
+13. crochet bunny pattern 2,400 (KD 12; existing post)  14. rabbit pattern crochet 3,600  15. crochet cat pattern 2,900  16. crochet dragon pattern 2,900  17. crochet frog pattern 2,900  18. crochet duck pattern 2,400 (KD 5)  19. crochet octopus pattern 2,400  20. koala crochet pattern 320 (existing post)  21. crochet heart pattern 4,400  22. crochet rose pattern 3,600  23. crochet pumpkin pattern 2,900 (KD 11)  24. crochet snowflake pattern 2,900  25. crochet scarf pattern 5,400  26. crochet bag pattern 5,400  27. crochet headband pattern 3,600  28. crochet shrug pattern 2,400  29. crochet newborn bonnet / baby hat 6,600 / 1,900  30. crochet washcloth pattern 2,400
+Rule for each: keyword in title, slug, first sentence and one heading; US wording first, UK/AU/CA synonyms in the text; internal links to its hub.
