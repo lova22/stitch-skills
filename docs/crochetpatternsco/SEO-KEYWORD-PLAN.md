@@ -159,3 +159,18 @@ Rule for each: keyword in title, slug, first sentence and one heading; US wordin
 - crochetconcupiscence.com: curated roundups of about 40 patterns by other designers, linking out to their shops, with affiliate links (themes seen: shrugs, diagrams, cross patterns, cupcakes, eyes, pink, filet crochet). Model for a "10 free crochet X patterns" roundup page; link to the designer's own page, never copy their pattern.
 - crocht.com and hellolidy.com: no results found for these domains in search. Ask the owner to confirm the spelling (crocht.com may be crochet.com, a retailer with free patterns and beginner kits).
 - Traffic figures for these sites are the owner's observation until confirmed in Semrush (Domain Overview and Organic Research PDFs, Top pages CSV).
+
+## Competitor reports, batch 3 (Semrush, US database, 2026-10-16)
+| Site | Google organic visits a month (Semrush estimate) | Keywords | Notes |
+|---|---|---|---|
+| yarnspirations.com | 331.0K (+7%); 78.2K branded, 252.8K non-branded | 68.1K | Only one of the three near the owner's "300K" figure. |
+| raffamusadesigns.com | 6.2K (+14%) | 7.4K | Almost all non-branded. |
+| crocht.com | 903 (+34%) | 5.4K; 3.3K backlinks, 698 referring domains | Small. Wins on clothing: sarong, maxi skirt, dresses, mens cardigan. |
+Important: Semrush counts Google organic search only. Pinterest, Facebook, YouTube, email and direct visits are not included, so a craft site can have far more total visits than Semrush shows. The owner reports 300K+ visits for these sites; that cannot be confirmed from Semrush. Check with a traffic-source tool (Similarweb shows channel split) before relying on it.
+
+What the top pages teach:
+- raffamusadesigns: one seasonal page ("ugly Christmas sweater crochet ornament") is 13.2% of its search traffic and ranks for 1,979 keywords; a technique tutorial ("how to join yarn with the magic knot", 2,400 searches) is 12.9%; plus "free crochet men scarf patterns" 7.6%, "crochet triangles" 5.3%, an amigurumi strawberry 4.0%. So: one strong seasonal pattern and one technique tutorial can each carry a site.
+- yarnspirations: its filtered pattern listing pages rank (crochet patterns filter 5.9%, bags and purses filter 2.9%, a baby blanket roundup 2.9%). So: listing and roundup pages for a topic (bags, baby blankets) are search targets, not only single patterns. Our parameter filter views are noindex on purpose; create real topic landing pages instead (for example "free crochet bag patterns") once enough patterns exist.
+- crocht.com: niche clothing keywords with low difficulty (KD 2 to 30) bring its traffic: a small site can win with narrow topics.
+
+Plan change: treat Pinterest as a main traffic channel next to Google. Needs: Pinterest business account, claimed website, rich pins (the theme already prints the Pinterest rich pin tag and has a Pin it button and pin description field), vertical pins (1000 x 1500) for each pattern and hub, boards by category, and scheduling in Metricool. Pins link to pattern pages, so each new pattern needs 2 to 3 pin designs.
