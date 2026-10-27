@@ -6,6 +6,7 @@ Last updated: 2026-10-25. Keep this file short. Put dated progress in `PROJECT-N
 - Goal: TRAFFIC. A fast, SEO/GEO/AI-ready library of free crochet PDF patterns (about 1,000 planned). Nothing is sold. PDFs live on Cloudflare R2 at `https://files.crochetpatternsco.com/`.
 - The owner works mostly from a phone and writes short English. Be brief, give exact taps and URLs, do not ask the same question twice.
 - The owner states that all PDFs and photos are the team's own. Do NOT ask again about ownership or whether a photo is real. Exceptions already handled: the sheep pattern (designer @anastasiya_budaeva, credit kept on page and PDF, written permission still to be kept by the owner) and the Easy Winter Beanie (third party, not published).
+- Since 2026-10-27 the owner wants ONLY general blog articles (techniques, yarn, tools, how-tos) with no pattern or product posts. Do not create or list pattern posts until the owner sends a PDF and its images. Write each article in original wording from topics chosen with Semrush volume and Search Console queries.
 - Never invent hook sizes, times, stats or designers. Do not call AI images the finished toy.
 
 ## Stack and tools
